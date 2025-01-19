@@ -6,12 +6,6 @@ still need to work, systems using python 2 still have to be written.
 This project is a fork of an old version of pyo3 that supported python2,
 with some patches to please newer Rust compilers. 
 
-### Features
-Currently only the code under the python2 feature flag has been
-modified to compile, so patches are welcome. For now i'm just patching whatever I personally need and not touching 
-the other parts of the codebase, but it is theoretically possible to backport this into relevant versions of pyo3,
-or maybe even glue py2 support as a library.
-
 ## ⚠ WARNING
 1. DO NOT use python 2 in 2025
 2. Really, DO NOT use python 2 in 2025
@@ -23,7 +17,20 @@ or maybe even glue py2 support as a library.
 * [The Statement](https://python3statement.github.io/)
 
 
-# PyO3
+### Usage
+I doubt I ever publish it to crates, so you just need to use git directly:
+```toml
+[dependencies]
+pyo3 = { git = "git@github.com:nev3rfail/pyo3-py2.git", branch = "py2", features = ["python2"] }
+```
+
+### Features
+Currently only the code under the python2 feature flag has been
+modified to compile, so patches are welcome. For now i'm just patching whatever I personally need and not touching 
+the other parts of the codebase, but it is theoretically possible to backport this into relevant versions of pyo3,
+or maybe even glue py2 support as a library.
+
+# Original README: PyO3
 
 [![Build Status](https://travis-ci.org/PyO3/pyo3.svg?branch=master)](https://travis-ci.org/PyO3/pyo3)
 [![Build Status](https://ci.appveyor.com/api/projects/status/github/PyO3/pyo3?branch=master&svg=true)](https://ci.appveyor.com/project/fafhrd91/pyo3)
