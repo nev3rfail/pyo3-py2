@@ -1,3 +1,29 @@
+# PyO3-py2
+Sometimes systems have a proprietary legacy that is not possible 
+to port to newer versions of languages. But people 
+still need to work, systems using python 2 still have to be written.
+
+This project is a fork of an old version of pyo3 that supported python2,
+with some patches to please newer Rust compilers. 
+
+### Features
+Currently only the code under the code python2 feature flag has been
+modified to compile, so patches are welcome. For now on i'm just patching whatever I personally need and not touching 
+the other parts of the codebase, but it is theoretically possible to backport this into relevant versions of pyo3,
+or maybe even glue py2 support as a library.
+
+## ⚠ WARNING
+1. DO NOT use python 2 in 2025
+2. Really, DO NOT use python 2 in 2025
+3. Use this project only as a last resort
+4. ???
+5. Rewrite everything to support modern languages.
+
+Original issue about removing python 2 support: https://github.com/PyO3/pyo3/issues/138
+
+[The Statement](https://python3statement.github.io/)
+
+
 # PyO3
 
 [![Build Status](https://travis-ci.org/PyO3/pyo3.svg?branch=master)](https://travis-ci.org/PyO3/pyo3)
