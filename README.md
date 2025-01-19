@@ -7,8 +7,8 @@ This project is a fork of an old version of pyo3 that supported python2,
 with some patches to please newer Rust compilers. 
 
 ### Features
-Currently only the code under the code python2 feature flag has been
-modified to compile, so patches are welcome. For now on i'm just patching whatever I personally need and not touching 
+Currently only the code under the python2 feature flag has been
+modified to compile, so patches are welcome. For now i'm just patching whatever I personally need and not touching 
 the other parts of the codebase, but it is theoretically possible to backport this into relevant versions of pyo3,
 or maybe even glue py2 support as a library.
 
