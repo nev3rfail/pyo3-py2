@@ -39,13 +39,25 @@ pub trait ToBorrowedObject: ToPyObject {
     }
 }
 
-impl<T> ToBorrowedObject for T where T: ToPyObject {}
+impl<T> ToBorrowedObject for T where T: ToPyObject {
+    default fn with_borrowed_ptr<F, R>(&self, py: Python, f: F) -> R
+    where
+        F: FnOnce(*mut ffi::PyObject) -> R,
+    {
+        let ptr = self.to_object(py).into_ptr();
+        let result = f(ptr);
+        unsafe {
+            ffi::Py_XDECREF(ptr);
+        }
+        result
+    }
+}
 
 impl<T> ToBorrowedObject for T
 where
     T: ToPyObject + ToPyPointer,
 {
-    fn with_borrowed_ptr<F, R>(&self, _py: Python, f: F) -> R
+     fn with_borrowed_ptr<F, R>(&self, _py: Python, f: F) -> R
     where
         F: FnOnce(*mut ffi::PyObject) -> R,
     {

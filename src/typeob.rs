@@ -310,7 +310,44 @@ pub trait PyTypeCreate: PyObjectAlloc<Self> + PyTypeInfo + Sized {
     }
 }
 
-impl<T> PyTypeCreate for T where T: PyObjectAlloc<Self> + PyTypeInfo + Sized {}
+impl<T> PyTypeCreate for T where T: PyObjectAlloc<Self> + PyTypeInfo + Sized {
+    #[inline]
+    default fn init_type() {
+        let type_object = unsafe { *<Self as PyTypeInfo>::type_object() };
+
+        if (type_object.tp_flags & ffi::Py_TPFLAGS_READY) == 0 {
+            // automatically initialize the class on-demand
+            let gil = Python::acquire_gil();
+            let py = gil.python();
+
+            initialize_type::<Self>(py, None).unwrap_or_else(|_| {
+                panic!("An error occurred while initializing class {}", Self::NAME)
+            });
+        }
+    }
+
+    #[inline]
+    default fn type_object() -> Py<PyType> {
+        <Self as PyTypeObject>::init_type();
+        PyType::new::<Self>()
+    }
+
+    /// Create PyRawObject which can be initialized with rust value
+    #[must_use]
+    default fn create(py: Python) -> PyResult<PyRawObject> {
+        <Self as PyTypeObject>::init_type();
+
+        unsafe {
+            let ptr = <Self as PyObjectAlloc<Self>>::alloc(py)?;
+            PyRawObject::new_with_ptr(
+                py,
+                ptr,
+                <Self as PyTypeInfo>::type_object(),
+                <Self as PyTypeInfo>::type_object(),
+            )
+        }
+    }
+}
 
 impl<T> PyTypeObject for T
 where

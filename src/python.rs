@@ -297,7 +297,7 @@ impl<'p> Python<'p> {
 
     unsafe fn unchecked_mut_downcast<T: PyTypeInfo>(self, ob: &PyObjectRef) -> &'p mut T {
         if T::OFFSET == 0 {
-            &mut *(ob as *const _ as *mut T)
+            &mut *(ob as *const _ as *mut T).as_mut().expect("OH FUCK2")
         } else {
             let ptr = (ob.as_ptr() as *mut u8).offset(T::OFFSET) as *mut T;
             &mut *ptr

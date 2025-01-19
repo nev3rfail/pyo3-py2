@@ -32,13 +32,15 @@ pub trait PyGCProtocolImpl {
     fn update_type_object(_type_object: &mut ffi::PyTypeObject) {}
 }
 
-impl<'p, T> PyGCProtocolImpl for T {}
+impl<'p, T> PyGCProtocolImpl for T {
+    default fn update_type_object(_type_object: &mut ffi::PyTypeObject) {}
+}
 
 impl<'p, T> PyGCProtocolImpl for T
 where
     T: PyGCProtocol<'p>,
 {
-    fn update_type_object(type_object: &mut ffi::PyTypeObject) {
+     fn update_type_object(type_object: &mut ffi::PyTypeObject) {
         type_object.tp_traverse = Self::tp_traverse();
         type_object.tp_clear = Self::tp_clear();
     }
@@ -74,7 +76,11 @@ trait PyGCTraverseProtocolImpl {
     }
 }
 
-impl<'p, T> PyGCTraverseProtocolImpl for T where T: PyGCProtocol<'p> {}
+impl<'p, T> PyGCTraverseProtocolImpl for T where T: PyGCProtocol<'p> {
+    default fn tp_traverse() -> Option<ffi::traverseproc> {
+        None
+    }
+}
 
 #[doc(hidden)]
 impl<T> PyGCTraverseProtocolImpl for T
@@ -82,7 +88,7 @@ where
     T: for<'p> PyGCTraverseProtocol<'p>,
 {
     #[inline]
-    fn tp_traverse() -> Option<ffi::traverseproc> {
+     fn tp_traverse() -> Option<ffi::traverseproc> {
         unsafe extern "C" fn tp_traverse<T>(
             slf: *mut ffi::PyObject,
             visit: ffi::visitproc,
@@ -116,7 +122,11 @@ trait PyGCClearProtocolImpl {
     }
 }
 
-impl<'p, T> PyGCClearProtocolImpl for T where T: PyGCProtocol<'p> {}
+impl<'p, T> PyGCClearProtocolImpl for T where T: PyGCProtocol<'p> {
+    default fn tp_clear() -> Option<ffi::inquiry> {
+        None
+    }
+}
 
 impl<T> PyGCClearProtocolImpl for T
 where

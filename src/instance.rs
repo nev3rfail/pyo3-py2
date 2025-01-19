@@ -147,7 +147,7 @@ impl<T> Py<T> {
     pub unsafe fn from_borrowed_ptr(ptr: *mut ffi::PyObject) -> Py<T> {
         debug_assert!(
             !ptr.is_null() && ffi::Py_REFCNT(ptr) > 0,
-            format!("REFCNT: {:?} - {:?}", ptr, ffi::Py_REFCNT(ptr))
+             format!("REFCNT: {:?} - {:?}", ptr, ffi::Py_REFCNT(ptr))
         );
         ffi::Py_INCREF(ptr);
         Py(NonNull::new_unchecked(ptr), std::marker::PhantomData)
@@ -227,7 +227,20 @@ trait AsPyRefDispatch<T: PyTypeInfo>: ToPyPointer {
     }
 }
 
-impl<T: PyTypeInfo> AsPyRefDispatch<T> for Py<T> {}
+impl<T: PyTypeInfo> AsPyRefDispatch<T> for Py<T> {
+    default fn as_ref_dispatch(&self, _py: Python) -> &T {
+        unsafe {
+            let ptr = (self.as_ptr() as *mut u8).offset(T::OFFSET) as *mut T;
+            ptr.as_ref().unwrap()
+        }
+    }
+    default fn as_mut_dispatch(&mut self, _py: Python) -> &mut T {
+        unsafe {
+            let ptr = (self.as_ptr() as *mut u8).offset(T::OFFSET) as *mut T;
+            ptr.as_mut().unwrap()
+        }
+    }
+}
 
 impl<T: PyTypeInfo + PyNativeType> AsPyRefDispatch<T> for Py<T> {
     fn as_ref_dispatch(&self, _py: Python) -> &T {

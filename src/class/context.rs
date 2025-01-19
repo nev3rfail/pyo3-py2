@@ -51,14 +51,18 @@ pub trait PyContextProtocolImpl {
     }
 }
 
-impl<T> PyContextProtocolImpl for T {}
+impl<T> PyContextProtocolImpl for T {
+    default fn methods() -> Vec<PyMethodDef> {
+        Vec::new()
+    }
+}
 
 impl<'p, T> PyContextProtocolImpl for T
 where
     T: PyContextProtocol<'p>,
 {
     #[inline]
-    fn methods() -> Vec<PyMethodDef> {
+     fn methods() -> Vec<PyMethodDef> {
         let mut methods = Vec::new();
 
         if let Some(def) = <Self as PyContextEnterProtocolImpl>::__enter__() {

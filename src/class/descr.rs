@@ -75,13 +75,17 @@ trait PyDescrGetProtocolImpl {
         None
     }
 }
-impl<'p, T> PyDescrGetProtocolImpl for T where T: PyDescrProtocol<'p> {}
+impl<'p, T> PyDescrGetProtocolImpl for T where T: PyDescrProtocol<'p> {
+    default fn tp_descr_get() -> Option<ffi::descrgetfunc> {
+        None
+    }
+}
 
 impl<T> PyDescrGetProtocolImpl for T
 where
     T: for<'p> PyDescrGetProtocol<'p>,
 {
-    fn tp_descr_get() -> Option<ffi::descrgetfunc> {
+     fn tp_descr_get() -> Option<ffi::descrgetfunc> {
         py_ternary_func!(
             PyDescrGetProtocol,
             T::__get__,
@@ -96,12 +100,16 @@ trait PyDescrSetProtocolImpl {
         None
     }
 }
-impl<'p, T> PyDescrSetProtocolImpl for T where T: PyDescrProtocol<'p> {}
+impl<'p, T> PyDescrSetProtocolImpl for T where T: PyDescrProtocol<'p> {
+    default fn tp_descr_set() -> Option<ffi::descrsetfunc> {
+        None
+    }
+}
 impl<T> PyDescrSetProtocolImpl for T
 where
     T: for<'p> PyDescrSetProtocol<'p>,
 {
-    fn tp_descr_set() -> Option<ffi::descrsetfunc> {
+     fn tp_descr_set() -> Option<ffi::descrsetfunc> {
         py_ternary_func!(
             PyDescrSetProtocol,
             T::__set__,
@@ -134,16 +142,21 @@ pub trait PyDescrProtocolImpl {
     fn tp_as_descr(_type_object: &mut ffi::PyTypeObject) {}
 }
 
-impl<T> PyDescrProtocolImpl for T {}
+impl<T> PyDescrProtocolImpl for T {
+    default fn methods() -> Vec<PyMethodDef> {
+        Vec::new()
+    }
+    default fn tp_as_descr(_type_object: &mut ffi::PyTypeObject) {}
+}
 
 impl<'p, T> PyDescrProtocolImpl for T
 where
     T: PyDescrProtocol<'p>,
 {
-    fn methods() -> Vec<PyMethodDef> {
+     fn methods() -> Vec<PyMethodDef> {
         Vec::new()
     }
-    fn tp_as_descr(type_object: &mut ffi::PyTypeObject) {
+     fn tp_as_descr(type_object: &mut ffi::PyTypeObject) {
         type_object.tp_descr_get = Self::tp_descr_get();
         type_object.tp_descr_set = Self::tp_descr_set();
     }

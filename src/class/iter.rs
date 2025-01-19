@@ -47,14 +47,16 @@ pub trait PyIterProtocolImpl {
     fn tp_as_iter(_typeob: &mut ffi::PyTypeObject) {}
 }
 
-impl<T> PyIterProtocolImpl for T {}
+impl<T> PyIterProtocolImpl for T {
+    default fn tp_as_iter(_typeob: &mut ffi::PyTypeObject) {}
+}
 
 impl<'p, T> PyIterProtocolImpl for T
 where
     T: PyIterProtocol<'p>,
 {
     #[inline]
-    fn tp_as_iter(typeob: &mut ffi::PyTypeObject) {
+     fn tp_as_iter(typeob: &mut ffi::PyTypeObject) {
         typeob.tp_iter = Self::tp_iter();
         typeob.tp_iternext = Self::tp_iternext();
     }
@@ -66,7 +68,11 @@ trait PyIterIterProtocolImpl {
     }
 }
 
-impl<'p, T> PyIterIterProtocolImpl for T where T: PyIterProtocol<'p> {}
+impl<'p, T> PyIterIterProtocolImpl for T where T: PyIterProtocol<'p> {
+    default fn tp_iter() -> Option<ffi::getiterfunc> {
+        None
+    }
+}
 
 impl<T> PyIterIterProtocolImpl for T
 where
@@ -89,14 +95,18 @@ trait PyIterNextProtocolImpl {
     }
 }
 
-impl<'p, T> PyIterNextProtocolImpl for T where T: PyIterProtocol<'p> {}
+impl<'p, T> PyIterNextProtocolImpl for T where T: PyIterProtocol<'p> {
+    default fn tp_iternext() -> Option<ffi::iternextfunc> {
+        None
+    }
+}
 
 impl<T> PyIterNextProtocolImpl for T
 where
     T: for<'p> PyIterNextProtocol<'p>,
 {
     #[inline]
-    fn tp_iternext() -> Option<ffi::iternextfunc> {
+     fn tp_iternext() -> Option<ffi::iternextfunc> {
         py_unary_func!(
             PyIterNextProtocol,
             T::__next__,

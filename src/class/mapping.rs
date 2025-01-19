@@ -114,7 +114,14 @@ pub trait PyMappingProtocolImpl {
     }
 }
 
-impl<T> PyMappingProtocolImpl for T {}
+impl<T> PyMappingProtocolImpl for T {
+    default fn tp_as_mapping() -> Option<ffi::PyMappingMethods> {
+        None
+    }
+    default fn methods() -> Vec<PyMethodDef> {
+        Vec::new()
+    }
+}
 
 impl<'p, T> PyMappingProtocolImpl for T
 where
@@ -159,14 +166,18 @@ trait PyMappingLenProtocolImpl {
     }
 }
 
-impl<'p, T> PyMappingLenProtocolImpl for T where T: PyMappingProtocol<'p> {}
+impl<'p, T> PyMappingLenProtocolImpl for T where T: PyMappingProtocol<'p> {
+    default fn mp_length() -> Option<ffi::lenfunc> {
+        None
+    }
+}
 
 impl<T> PyMappingLenProtocolImpl for T
 where
     T: for<'p> PyMappingLenProtocol<'p>,
 {
     #[inline]
-    fn mp_length() -> Option<ffi::lenfunc> {
+     fn mp_length() -> Option<ffi::lenfunc> {
         py_len_func!(PyMappingLenProtocol, T::__len__, LenResultConverter)
     }
 }
@@ -177,14 +188,18 @@ trait PyMappingGetItemProtocolImpl {
     }
 }
 
-impl<'p, T> PyMappingGetItemProtocolImpl for T where T: PyMappingProtocol<'p> {}
+impl<'p, T> PyMappingGetItemProtocolImpl for T where T: PyMappingProtocol<'p> {
+    default fn mp_subscript() -> Option<ffi::binaryfunc> {
+        None
+    }
+}
 
 impl<T> PyMappingGetItemProtocolImpl for T
 where
     T: for<'p> PyMappingGetItemProtocol<'p>,
 {
     #[inline]
-    fn mp_subscript() -> Option<ffi::binaryfunc> {
+     fn mp_subscript() -> Option<ffi::binaryfunc> {
         py_binary_func!(
             PyMappingGetItemProtocol,
             T::__getitem__,
@@ -200,7 +215,11 @@ trait PyMappingSetItemProtocolImpl {
     }
 }
 
-impl<'p, T> PyMappingSetItemProtocolImpl for T where T: PyMappingProtocol<'p> {}
+impl<'p, T> PyMappingSetItemProtocolImpl for T where T: PyMappingProtocol<'p> {
+    default fn mp_ass_subscript() -> Option<ffi::objobjargproc> {
+        None
+    }
+}
 
 impl<T> PyMappingSetItemProtocolImpl for T
 where
@@ -220,7 +239,11 @@ trait DeplItemDipatch {
     }
 }
 
-impl<'p, T> DeplItemDipatch for T where T: PyMappingProtocol<'p> {}
+impl<'p, T> DeplItemDipatch for T where T: PyMappingProtocol<'p> {
+    default fn mp_del_subscript() -> Option<ffi::objobjargproc> {
+        None
+    }
+}
 
 /// Returns `py_func_set_del` if PyMappingSetItemProtocol is implemented, otherwise `py_func_del`
 trait DelSetItemDispatch: Sized + for<'p> PyMappingDelItemProtocol<'p> {
@@ -229,13 +252,17 @@ trait DelSetItemDispatch: Sized + for<'p> PyMappingDelItemProtocol<'p> {
     }
 }
 
-impl<T> DelSetItemDispatch for T where T: Sized + for<'p> PyMappingDelItemProtocol<'p> {}
+impl<T> DelSetItemDispatch for T where T: Sized + for<'p> PyMappingDelItemProtocol<'p> {
+    default fn det_set_dispatch() -> Option<ffi::objobjargproc> {
+        py_func_del!(PyMappingDelItemProtocol, Self, __delitem__)
+    }
+}
 
 impl<T> DelSetItemDispatch for T
 where
     T: for<'p> PyMappingSetItemProtocol<'p> + for<'p> PyMappingDelItemProtocol<'p>,
 {
-    fn det_set_dispatch() -> Option<ffi::objobjargproc> {
+     fn det_set_dispatch() -> Option<ffi::objobjargproc> {
         py_func_set_del!(
             PyMappingSetItemProtocol,
             PyMappingDelItemProtocol,

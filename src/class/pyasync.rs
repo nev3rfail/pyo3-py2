@@ -138,14 +138,18 @@ trait PyAsyncAwaitProtocolImpl {
     }
 }
 
-impl<'p, T> PyAsyncAwaitProtocolImpl for T where T: PyAsyncProtocol<'p> {}
+impl<'p, T> PyAsyncAwaitProtocolImpl for T where T: PyAsyncProtocol<'p> {
+    default fn am_await() -> Option<ffi::unaryfunc> {
+        None
+    }
+}
 
 impl<T> PyAsyncAwaitProtocolImpl for T
 where
     T: for<'p> PyAsyncAwaitProtocol<'p>,
 {
     #[inline]
-    fn am_await() -> Option<ffi::unaryfunc> {
+     fn am_await() -> Option<ffi::unaryfunc> {
         py_unary_func!(
             PyAsyncAwaitProtocol,
             T::__await__,
@@ -161,14 +165,18 @@ trait PyAsyncAiterProtocolImpl {
     }
 }
 
-impl<'p, T> PyAsyncAiterProtocolImpl for T where T: PyAsyncProtocol<'p> {}
+impl<'p, T> PyAsyncAiterProtocolImpl for T where T: PyAsyncProtocol<'p> {
+    default fn am_aiter() -> Option<ffi::unaryfunc> {
+        None
+    }
+}
 
 impl<T> PyAsyncAiterProtocolImpl for T
 where
     T: for<'p> PyAsyncAiterProtocol<'p>,
 {
     #[inline]
-    fn am_aiter() -> Option<ffi::unaryfunc> {
+    default fn am_aiter() -> Option<ffi::unaryfunc> {
         py_unary_func!(
             PyAsyncAiterProtocol,
             T::__aiter__,

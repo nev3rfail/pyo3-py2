@@ -128,10 +128,10 @@ macro_rules! pyobject_native_type_convert(
 
         impl<$($type_param,)*> $crate::typeob::PyTypeCreate for $name {
             #[inline]
-            fn init_type() {}
+             default fn init_type() {}
 
             #[inline]
-            fn type_object() -> $crate::Py<$crate::types::PyType> {
+             default fn type_object() -> $crate::Py<$crate::types::PyType> {
                 $crate::types::PyType::new::<$name>()
             }
         }

@@ -47,14 +47,16 @@ pub trait PyBufferProtocolImpl {
     }
 }
 
-impl<T> PyBufferProtocolImpl for T {}
+impl<T> PyBufferProtocolImpl for T {
+    default fn tp_as_buffer() -> Option<ffi::PyBufferProcs> { None }
+}
 
 impl<'p, T> PyBufferProtocolImpl for T
 where
     T: PyBufferProtocol<'p>,
 {
     #[inline]
-    fn tp_as_buffer() -> Option<ffi::PyBufferProcs> {
+     fn tp_as_buffer() -> Option<ffi::PyBufferProcs> {
         Some(ffi::PyBufferProcs {
             bf_getbuffer: Self::cb_bf_getbuffer(),
             bf_releasebuffer: None,
@@ -69,14 +71,18 @@ trait PyBufferGetBufferProtocolImpl {
     }
 }
 
-impl<'p, T> PyBufferGetBufferProtocolImpl for T where T: PyBufferProtocol<'p> {}
+impl<'p, T> PyBufferGetBufferProtocolImpl for T where T: PyBufferProtocol<'p> {
+    default fn cb_bf_getbuffer() -> Option<ffi::getbufferproc> {
+        None
+    }
+}
 
 impl<T> PyBufferGetBufferProtocolImpl for T
 where
     T: for<'p> PyBufferGetBufferProtocol<'p>,
 {
     #[inline]
-    fn cb_bf_getbuffer() -> Option<ffi::getbufferproc> {
+     fn cb_bf_getbuffer() -> Option<ffi::getbufferproc> {
         unsafe extern "C" fn wrap<T>(
             slf: *mut ffi::PyObject,
             arg1: *mut ffi::Py_buffer,

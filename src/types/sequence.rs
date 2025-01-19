@@ -295,7 +295,8 @@ impl PyTryFrom for PySequence {
         unsafe {
             if ffi::PySequence_Check(value.as_ptr()) != 0 {
                 let ptr = value as *const _ as *mut PySequence;
-                Ok(&mut *ptr)
+
+                Ok(&mut *ptr.as_mut().expect("OH FUC"))
             } else {
                 Err(PyDowncastError)
             }
