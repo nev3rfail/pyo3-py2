@@ -19,9 +19,8 @@ or maybe even glue py2 support as a library.
 4. ???
 5. Rewrite everything to support modern languages.
 
-Original issue about removing python 2 support: https://github.com/PyO3/pyo3/issues/138
-
-[The Statement](https://python3statement.github.io/)
+* Original issue about removing python 2 support: https://github.com/PyO3/pyo3/issues/138
+* [The Statement](https://python3statement.github.io/)
 
 
 # PyO3
