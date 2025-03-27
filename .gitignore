@@ -18,3 +18,4 @@ venv*
 *.out
 *.egg-info
 extensions/stamps/
+.idea
