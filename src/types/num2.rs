@@ -8,13 +8,13 @@ extern crate num_traits;
 use self::num_traits::cast::cast;
 
 use super::num_common::{err_if_invalid_value, IS_LITTLE_ENDIAN};
-use conversion::{FromPyObject, IntoPyObject, ToPyObject};
-use err::{PyErr, PyResult};
-use ffi;
-use instance::{Py, PyObjectWithToken};
-use object::PyObject;
-use python::{IntoPyPointer, Python, ToPyPointer};
-use types::{exceptions, PyObjectRef};
+use crate::conversion::{FromPyObject, IntoPyObject, ToPyObject};
+use crate::err::{PyErr, PyResult};
+use crate::ffi;
+use crate::instance::{Py, PyObjectWithToken};
+use crate::object::PyObject;
+use crate::python::{IntoPyPointer, Python, ToPyPointer};
+use crate::types::{exceptions, PyObjectRef};
 
 /// Represents a Python `int` object.
 ///
@@ -180,8 +180,8 @@ int_convert_bignum!(u128, 16, IS_LITTLE_ENDIAN, 0);
 
 #[cfg(test)]
 mod test {
-    use conversion::ToPyObject;
-    use python::Python;
+    use crate::conversion::ToPyObject;
+    use crate::python::Python;
 
     macro_rules! num_to_py_object_and_back (
         ($func_name:ident, $t1:ty, $t2:ty) => (

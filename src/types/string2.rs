@@ -8,13 +8,13 @@ use std::os::raw::c_char;
 use std::str;
 
 use super::PyObjectRef;
-use err::{PyErr, PyResult};
-use ffi;
-use instance::{Py, PyObjectWithToken};
-use object::PyObject;
-use objectprotocol::ObjectProtocol;
-use python::{Python, ToPyPointer};
-use types::exceptions;
+use crate::err::{PyErr, PyResult};
+use crate::ffi;
+use crate::instance::{Py, PyObjectWithToken};
+use crate::object::PyObject;
+use crate::objectprotocol::ObjectProtocol;
+use crate::python::{Python, ToPyPointer};
+use crate::types::exceptions;
 
 /// Represents a Python `string`.
 #[repr(transparent)]
@@ -205,10 +205,10 @@ impl std::convert::From<Py<PyUnicode>> for Py<PyString> {
 #[cfg(test)]
 mod test {
     use super::PyString;
-    use conversion::{FromPyObject, PyTryFrom, ToPyObject};
-    use instance::AsPyRef;
-    use object::PyObject;
-    use python::Python;
+    use crate::conversion::{FromPyObject, PyTryFrom, ToPyObject};
+    use crate::instance::AsPyRef;
+    use crate::object::PyObject;
+    use crate::python::Python;
     use std::borrow::Cow;
 
     #[test]
