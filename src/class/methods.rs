@@ -122,18 +122,22 @@ impl PySetterDef {
 #[doc(hidden)]
 /// The pymethods macro implements this trait so the methods are added to the object
 pub trait PyMethodsProtocolImpl {
-    fn py_methods() -> &'static [PyMethodDefType] {
+    fn py_methods() -> &'static [PyMethodDefType];
+}
+
+impl<T> PyMethodsProtocolImpl for T {
+    default fn py_methods() -> &'static [PyMethodDefType] {
         &[]
     }
 }
-
-impl<T> PyMethodsProtocolImpl for T {}
 
 #[doc(hidden)]
 pub trait PyPropMethodsProtocolImpl {
-    fn py_methods() -> &'static [PyMethodDefType] {
+    fn py_methods() -> &'static [PyMethodDefType];
+}
+
+impl<T> PyPropMethodsProtocolImpl for T {
+    default fn py_methods() -> &'static [PyMethodDefType] {
         &[]
     }
 }
-
-impl<T> PyPropMethodsProtocolImpl for T {}

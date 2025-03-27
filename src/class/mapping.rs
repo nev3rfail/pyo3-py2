@@ -284,27 +284,33 @@ where
 
 #[doc(hidden)]
 pub trait PyMappingContainsProtocolImpl {
-    fn __contains__() -> Option<PyMethodDef> {
+    fn __contains__() -> Option<PyMethodDef>;
+}
+
+impl<'p, T> PyMappingContainsProtocolImpl for T where T: PyMappingProtocol<'p> {
+    default fn __contains__() -> Option<PyMethodDef> {
         None
     }
 }
-
-impl<'p, T> PyMappingContainsProtocolImpl for T where T: PyMappingProtocol<'p> {}
 
 #[doc(hidden)]
 pub trait PyMappingReversedProtocolImpl {
-    fn __reversed__() -> Option<PyMethodDef> {
+    fn __reversed__() -> Option<PyMethodDef>;
+}
+
+impl<'p, T> PyMappingReversedProtocolImpl for T where T: PyMappingProtocol<'p> {
+    default fn __reversed__() -> Option<PyMethodDef> {
         None
     }
 }
-
-impl<'p, T> PyMappingReversedProtocolImpl for T where T: PyMappingProtocol<'p> {}
 
 #[doc(hidden)]
 pub trait PyMappingIterProtocolImpl {
-    fn __iter__() -> Option<PyMethodDef> {
+    fn __iter__() -> Option<PyMethodDef>;
+}
+
+impl<'p, T> PyMappingIterProtocolImpl for T where T: PyMappingProtocol<'p> {
+    default fn __iter__() -> Option<PyMethodDef> {
         None
     }
 }
-
-impl<'p, T> PyMappingIterProtocolImpl for T where T: PyMappingProtocol<'p> {}

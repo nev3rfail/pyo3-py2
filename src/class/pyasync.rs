@@ -91,6 +91,13 @@ pub trait PyAsyncAexitProtocol<'p>: PyAsyncProtocol<'p> {
 #[cfg(Py_3)]
 #[doc(hidden)]
 pub trait PyAsyncProtocolImpl {
+    fn tp_as_async() -> Option<ffi::PyAsyncMethods>;
+
+    fn methods() -> Vec<PyMethodDef>;
+}
+
+#[cfg(Py_3)]
+default impl<T> PyAsyncProtocolImpl for T {
     fn tp_as_async() -> Option<ffi::PyAsyncMethods> {
         None
     }
@@ -99,9 +106,6 @@ pub trait PyAsyncProtocolImpl {
         Vec::new()
     }
 }
-
-#[cfg(Py_3)]
-impl<T> PyAsyncProtocolImpl for T {}
 
 #[cfg(Py_3)]
 impl<'p, T> PyAsyncProtocolImpl for T

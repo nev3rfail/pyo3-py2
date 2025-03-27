@@ -327,7 +327,7 @@ fn impl_descriptors(cls: &syn::Type, descriptors: Vec<(syn::Field, Vec<FnType>)>
         #(#methods)*
 
         impl ::pyo3::class::methods::PyPropMethodsProtocolImpl for #cls {
-            fn py_methods() -> &'static [::pyo3::class::PyMethodDefType] {
+            default fn py_methods() -> &'static [::pyo3::class::PyMethodDefType] {
                 static METHODS: &'static [::pyo3::class::PyMethodDefType] = &[
                     #(#py_methods),*
                 ];

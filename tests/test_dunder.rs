@@ -87,23 +87,23 @@ struct StringMethods {
 
 #[pyproto]
 impl<'p> PyObjectProtocol<'p> for StringMethods {
-    fn __str__(&self) -> PyResult<&'static str> {
+    default fn __str__(&self) -> PyResult<&'static str> {
         Ok("str")
     }
 
-    fn __repr__(&self) -> PyResult<&'static str> {
+    default fn __repr__(&self) -> PyResult<&'static str> {
         Ok("repr")
     }
 
-    fn __format__(&self, format_spec: String) -> PyResult<String> {
+    default fn __format__(&self, format_spec: String) -> PyResult<String> {
         Ok(format!("format({})", format_spec))
     }
 
-    fn __bytes__(&self) -> PyResult<PyObject> {
+    default fn __bytes__(&self) -> PyResult<PyObject> {
         Ok(PyBytes::new(self.py(), b"bytes").into())
     }
 
-    fn __unicode__(&self) -> PyResult<PyObject> {
+    default fn __unicode__(&self) -> PyResult<PyObject> {
         Ok(PyString::new(self.py(), "unicode").into())
     }
 }

@@ -367,32 +367,36 @@ where
 
 #[doc(hidden)]
 pub trait FormatProtocolImpl {
-    fn __format__() -> Option<PyMethodDef> {
+    fn __format__() -> Option<PyMethodDef>;
+}
+impl<'p, T> FormatProtocolImpl for T where T: PyObjectProtocol<'p> {
+    default fn __format__() -> Option<PyMethodDef> {
         None
     }
 }
-impl<'p, T> FormatProtocolImpl for T where T: PyObjectProtocol<'p> {}
 
 #[doc(hidden)]
 pub trait BytesProtocolImpl {
-    fn __bytes__() -> Option<PyMethodDef> {
+    fn __bytes__() -> Option<PyMethodDef>;
+}
+impl<'p, T> BytesProtocolImpl for T where T: PyObjectProtocol<'p> {
+    default fn __bytes__() -> Option<PyMethodDef> {
         None
     }
 }
-impl<'p, T> BytesProtocolImpl for T where T: PyObjectProtocol<'p> {}
 
 #[doc(hidden)]
 pub trait UnicodeProtocolImpl {
-    fn __unicode__() -> Option<PyMethodDef> {
+    fn __unicode__() -> Option<PyMethodDef>;
+}
+impl<'p, T> UnicodeProtocolImpl for T where T: PyObjectProtocol<'p> {
+    default fn __unicode__() -> Option<PyMethodDef> {
         None
     }
 }
-impl<'p, T> UnicodeProtocolImpl for T where T: PyObjectProtocol<'p> {}
 
 trait HashProtocolImpl {
-    fn tp_hash() -> Option<ffi::hashfunc> {
-        None
-    }
+    fn tp_hash() -> Option<ffi::hashfunc>;
 }
 impl<'p, T> HashProtocolImpl for T where T: PyObjectProtocol<'p> {
     default fn tp_hash() -> Option<ffi::hashfunc> {
