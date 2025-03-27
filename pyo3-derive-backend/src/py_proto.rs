@@ -71,7 +71,7 @@ fn impl_proto_impl(
                             impl #proto for #ty
                             {
                                 #[inline]
-                                fn #name() -> Option<::pyo3::class::methods::PyMethodDef> {
+                                default fn #name() -> Option<::pyo3::class::methods::PyMethodDef> {
                                     #meth
 
                                     Some(::pyo3::class::PyMethodDef {
