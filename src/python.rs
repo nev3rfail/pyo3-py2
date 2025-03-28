@@ -16,6 +16,7 @@ use std::ffi::CString;
 use std::marker::PhantomData;
 use std::os::raw::c_int;
 use std::ptr::NonNull;
+use std::cell::UnsafeCell;
 
 pub type NonNullPyObject = NonNull<ffi::PyObject>;
 
@@ -295,9 +296,12 @@ impl<'p> Python<'p> {
         }
     }
 
+
     unsafe fn unchecked_mut_downcast<T: PyTypeInfo>(self, ob: &PyObjectRef) -> &'p mut T {
         if T::OFFSET == 0 {
-            &mut *(ob as *const _ as *mut T).as_mut().expect("OH FUCK2")
+            let ptr = ob.as_ptr() as *const UnsafeCell<T>;
+            return &mut *UnsafeCell::raw_get(ptr);
+            //&mut *(ob as *const _ as *mut T)
         } else {
             let ptr = (ob.as_ptr() as *mut u8).offset(T::OFFSET) as *mut T;
             &mut *ptr

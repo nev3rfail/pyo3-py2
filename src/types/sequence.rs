@@ -9,6 +9,7 @@ use crate::object::PyObject;
 use crate::objectprotocol::ObjectProtocol;
 use crate::python::ToPyPointer;
 use crate::types::{PyList, PyObjectRef, PyTuple};
+use std::cell::UnsafeCell;
 
 /// Represents a reference to a python object supporting the sequence protocol.
 #[repr(transparent)]
@@ -294,9 +295,8 @@ impl PyTryFrom for PySequence {
     fn try_from_mut(value: &PyObjectRef) -> Result<&mut PySequence, PyDowncastError> {
         unsafe {
             if ffi::PySequence_Check(value.as_ptr()) != 0 {
-                let ptr = value as *const _ as *mut PySequence;
-
-                Ok(&mut *ptr.as_mut().expect("OH FUC"))
+                let ptr = value.as_ptr() as *const UnsafeCell<PySequence>;
+                Ok(&mut *UnsafeCell::raw_get(ptr))
             } else {
                 Err(PyDowncastError)
             }
