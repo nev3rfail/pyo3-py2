@@ -191,12 +191,14 @@ where
 }
 
 trait PyAsyncAnextProtocolImpl {
-    fn am_anext() -> Option<ffi::unaryfunc> {
+    fn am_anext() -> Option<ffi::unaryfunc>;
+}
+
+impl<'p, T> PyAsyncAnextProtocolImpl for T where T: PyAsyncProtocol<'p> {
+    default fn am_anext() -> Option<ffi::unaryfunc> {
         None
     }
 }
-
-impl<'p, T> PyAsyncAnextProtocolImpl for T where T: PyAsyncProtocol<'p> {}
 
 #[cfg(Py_3)]
 mod anext {

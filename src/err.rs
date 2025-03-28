@@ -113,8 +113,8 @@ macro_rules! py_exception {
 pub enum PyErrValue {
     None,
     Value(PyObject),
-    ToArgs(Box<PyErrArguments>),
-    ToObject(Box<ToPyObject>),
+    ToArgs(Box<dyn PyErrArguments>),
+    ToObject(Box<dyn ToPyObject>),
 }
 
 /// Represents a Python exception that was raised.
