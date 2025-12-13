@@ -1,5 +1,6 @@
 import datetime as pdt
 import sys
+import platform
 
 import pytest
 import rustapi_module.datetime as rdt
@@ -46,6 +47,11 @@ MIN_MICROSECONDS = int(pdt.timedelta.min.total_seconds() * 1e6)
 
 HAS_FOLD = getattr(pdt.datetime, "fold", False)
 
+# Platform-specific limits for Windows (localtime/gmtime epoch limit)
+IS_WINDOWS = platform.system() == "Windows"
+WINDOWS_TIMESTAMP_MIN = 0  # 1970-01-01
+WINDOWS_TIMESTAMP_MAX = 253402300799  # 9999-12-31
+
 # Helper functions
 get_timestamp = getattr(pdt.datetime, "timestamp", None)
 if get_timestamp is None:
@@ -53,6 +59,13 @@ if get_timestamp is None:
     def get_timestamp(dt):
         # Python 2 compatibility
         return (dt - pdt.datetime(1970, 1, 1)).total_seconds()
+
+
+def is_timestamp_supported(ts):
+    """Check if timestamp is supported by platform localtime()/gmtime()"""
+    if not IS_WINDOWS:
+        return True
+    return WINDOWS_TIMESTAMP_MIN <= ts <= WINDOWS_TIMESTAMP_MAX
 
 
 xfail_date_bounds = pytest.mark.xfail(
@@ -80,10 +93,13 @@ def test_invalid_date_fails():
         rdt.make_date(2017, 2, 30)
 
 
-@given(d=dates())
+@given(d=dates(min_value=pdt.date(1970, 1, 1), max_value=pdt.date(2038, 1, 1)))
 def test_date_from_timestamp(d):
     ts = get_timestamp(pdt.datetime.combine(d, pdt.time(0)))
-    assert rdt.date_from_timestamp(int(ts)) == pdt.date.fromtimestamp(ts)
+    if is_timestamp_supported(ts):
+        assert rdt.date_from_timestamp(int(ts)) == pdt.date.fromtimestamp(ts)
+    else:
+        pytest.skip("Timestamp out of platform range")
 
 
 @pytest.mark.parametrize(
@@ -167,6 +183,7 @@ def test_invalid_time_fails(args):
         (0, 0, 0, 0, "UTC"),
     ],
 )
+@pytest.mark.xfail(sys.version_info < (3, 0), reason="Python 2.7 doesn't raise TypeError for string args")
 def test_time_typeerror(args):
     with pytest.raises(TypeError):
         rdt.make_time(*args)
@@ -216,10 +233,13 @@ def test_datetime_typeerror():
         rdt.make_datetime("2011", 1, 1, 0, 0, 0, 0)
 
 
-@given(dt=datetimes())
+@given(dt=datetimes(min_value=pdt.datetime(1970, 1, 1), max_value=pdt.datetime(2038, 1, 1)))
 def test_datetime_from_timestamp(dt):
     ts = get_timestamp(dt)
-    assert rdt.datetime_from_timestamp(ts) == pdt.datetime.fromtimestamp(ts)
+    if is_timestamp_supported(ts):
+        assert rdt.datetime_from_timestamp(ts) == pdt.datetime.fromtimestamp(ts)
+    else:
+        pytest.skip("Timestamp out of platform range")
 
 
 def test_datetime_from_timestamp_tzinfo():
