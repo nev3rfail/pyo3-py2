@@ -1,5 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Tests in 'tests'" type="CargoCommandRunConfiguration" factoryName="Cargo Command">
+    <option name="buildProfileId" value="test" />
     <option name="command" value="test --package pyo3 --test test_arithmetics --test test_buffer_protocol --test test_class_basics --test test_class_new --test test_datetime --test test_dict_iter --test test_doc --test test_dunder --test test_gc --test test_getter_setter --test test_inheritance --test test_methods --test test_module --test test_various --features python2" />
     <option name="workingDirectory" value="file://$PROJECT_DIR$" />
     <envs>
