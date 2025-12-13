@@ -117,7 +117,7 @@ macro_rules! pyobject_native_type_convert(
 
             #[inline]
             unsafe fn type_object() -> &'static mut $crate::ffi::PyTypeObject { unsafe {
-                &mut $typeobject
+                &mut *::std::ptr::addr_of_mut!($typeobject)
             }}
 
             fn is_instance(ptr: &$crate::types::PyObjectRef) -> bool {
