@@ -3,7 +3,7 @@ use crate::ffi2::pyport::Py_ssize_t;
 use std::os::raw::c_int;
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
-extern "C" {
+unsafe extern "C" {
     static mut _Py_EllipsisObject: PyObject;
 }
 
@@ -27,7 +27,7 @@ pub struct PySliceObject {
 }
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
-extern "C" {
+unsafe extern "C" {
     pub static mut PySlice_Type: PyTypeObject;
     pub static mut PyEllipsis_Type: PyTypeObject;
 }
@@ -38,7 +38,7 @@ pub unsafe fn PySlice_Check(op: *mut PyObject) -> c_int {
 }
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
-extern "C" {
+unsafe extern "C" {
     pub fn PySlice_New(
         start: *mut PyObject,
         stop: *mut PyObject,

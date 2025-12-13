@@ -2,7 +2,7 @@ use crate::ffi2::object::*;
 use std::os::raw::c_int;
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
-extern "C" {
+unsafe extern "C" {
     pub static mut PyFunction_Type: PyTypeObject;
 }
 
@@ -13,7 +13,7 @@ pub unsafe fn PyFunction_Check(op: *mut PyObject) -> c_int {
 }
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
-extern "C" {
+unsafe extern "C" {
     pub fn PyFunction_New(code: *mut PyObject, globals: *mut PyObject) -> *mut PyObject;
     pub fn PyFunction_GetCode(f: *mut PyObject) -> *mut PyObject;
     pub fn PyFunction_GetGlobals(f: *mut PyObject) -> *mut PyObject;

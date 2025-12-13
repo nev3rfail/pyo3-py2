@@ -52,7 +52,7 @@ pub const PY_WRITE_RESTRICTED: c_int = 4;
 pub const RESTRICTED: c_int = READ_RESTRICTED | PY_WRITE_RESTRICTED;
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
-extern "C" {
+unsafe extern "C" {
     pub fn PyMember_GetOne(addr: *const c_char, l: *mut PyMemberDef) -> *mut PyObject;
     pub fn PyMember_SetOne(addr: *mut c_char, l: *mut PyMemberDef, value: *mut PyObject) -> c_int;
 }

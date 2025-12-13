@@ -3,7 +3,7 @@ use crate::ffi2::pyport::Py_ssize_t;
 use std::os::raw::{c_int, c_void};
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
-extern "C" {
+unsafe extern "C" {
     pub static mut PyBuffer_Type: PyTypeObject;
 }
 
@@ -16,7 +16,7 @@ pub unsafe fn PyBuffer_Check(op: *mut PyObject) -> c_int {
 pub const Py_END_OF_BUFFER: Py_ssize_t = -1;
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
-extern "C" {
+unsafe extern "C" {
     pub fn PyBuffer_FromObject(
         base: *mut PyObject,
         offset: Py_ssize_t,

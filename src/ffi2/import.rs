@@ -34,7 +34,7 @@ pub unsafe fn PyImport_ImportModuleEx(
 }
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
-extern "C" {
+unsafe extern "C" {
     pub fn PyImport_ImportModule(name: *const c_char) -> *mut PyObject;
     pub fn PyImport_ImportModuleNoBlock(name: *const c_char) -> *mut PyObject;
     pub fn PyImport_ImportModuleLevel(

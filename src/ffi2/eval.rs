@@ -3,7 +3,7 @@ use crate::ffi2::object::PyObject;
 use std::os::raw::c_int;
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
-extern "C" {
+unsafe extern "C" {
     pub fn PyEval_EvalCode(
         arg1: *mut PyCodeObject,
         arg2: *mut PyObject,

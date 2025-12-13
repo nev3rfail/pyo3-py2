@@ -7,7 +7,7 @@ use crate::ffi2::unicodeobject::Py_UNICODE;
 use std::os::raw::{c_char, c_int};
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
-extern "C" {
+unsafe extern "C" {
     pub fn PyErr_SetNone(arg1: *mut PyObject);
     pub fn PyErr_SetObject(arg1: *mut PyObject, arg2: *mut PyObject);
     pub fn PyErr_SetString(arg1: *mut PyObject, arg2: *const c_char);
@@ -61,7 +61,7 @@ pub unsafe fn PyExceptionInstance_Class(x: *mut PyObject) -> *mut PyObject {
 }
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
-extern "C" {
+unsafe extern "C" {
     pub static mut PyExc_BaseException: *mut PyObject;
     pub static mut PyExc_Exception: *mut PyObject;
     pub static mut PyExc_StopIteration: *mut PyObject;
@@ -150,7 +150,7 @@ extern "C" {
 
 #[cfg(py_sys_config = "Py_USING_UNICODE")]
 #[cfg_attr(windows, link(name = "pythonXY"))]
-extern "C" {
+unsafe extern "C" {
     pub fn PyUnicodeDecodeError_Create(
         arg1: *const c_char,
         arg2: *const c_char,

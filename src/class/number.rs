@@ -11,6 +11,7 @@ use crate::ffi;
 use crate::typeob::PyTypeInfo;
 use crate::{FromPyObject, IntoPyObject};
 
+
 /// Number interface
 #[allow(unused_variables)]
 pub trait PyNumberProtocol<'p>: PyTypeInfo {

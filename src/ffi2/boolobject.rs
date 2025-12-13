@@ -5,7 +5,7 @@ use std::os::raw::{c_int, c_long};
 pub type PyBoolObject = PyIntObject;
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
-extern "C" {
+unsafe extern "C" {
     pub static mut PyBool_Type: PyTypeObject;
     static mut _Py_ZeroStruct: PyIntObject;
     static mut _Py_TrueStruct: PyIntObject;

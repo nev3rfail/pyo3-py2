@@ -2,7 +2,7 @@ use crate::ffi2::object::*;
 use std::os::raw::{c_char, c_int, c_void};
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
-extern "C" {
+unsafe extern "C" {
     pub static mut PyCapsule_Type: PyTypeObject;
 }
 
@@ -14,7 +14,7 @@ pub unsafe fn PyCapsule_CheckExact(ob: *mut PyObject) -> c_int {
 }
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
-extern "C" {
+unsafe extern "C" {
     pub fn PyCapsule_New(
         pointer: *mut c_void,
         name: *const c_char,

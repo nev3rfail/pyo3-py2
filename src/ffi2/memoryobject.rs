@@ -3,7 +3,7 @@ use crate::ffi2::pyport::Py_ssize_t;
 use std::os::raw::{c_char, c_int};
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
-extern "C" {
+unsafe extern "C" {
     pub static mut PyMemoryView_Type: PyTypeObject;
 }
 
@@ -24,7 +24,7 @@ pub unsafe fn PyMemoryView_GET_BASE(op: *mut PyObject) -> *mut PyObject {
 }
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
-extern "C" {
+unsafe extern "C" {
     pub fn PyMemoryView_GetContiguous(
         base: *mut PyObject,
         buffertype: c_int,

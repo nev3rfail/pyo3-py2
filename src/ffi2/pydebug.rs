@@ -1,7 +1,7 @@
 use std::os::raw::{c_char, c_int};
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
-extern "C" {
+unsafe extern "C" {
     pub static mut Py_DebugFlag: c_int;
     pub static mut Py_VerboseFlag: c_int;
     pub static mut Py_InteractiveFlag: c_int;

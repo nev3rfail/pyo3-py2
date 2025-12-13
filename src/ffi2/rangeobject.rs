@@ -2,7 +2,7 @@ use crate::ffi2::object::*;
 use std::os::raw::c_int;
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
-extern "C" {
+unsafe extern "C" {
     pub static mut PyRange_Type: PyTypeObject;
 }
 

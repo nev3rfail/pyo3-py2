@@ -6,7 +6,7 @@ use std::os::raw::{c_int, c_void};
 pub enum PyArena {}
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
-extern "C" {
+unsafe extern "C" {
     pub fn PyArena_New() -> *mut PyArena;
     pub fn PyArena_Free(arg1: *mut PyArena);
     pub fn PyArena_Malloc(arg1: *mut PyArena, size: size_t) -> *mut c_void;

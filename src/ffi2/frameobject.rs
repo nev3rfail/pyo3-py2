@@ -53,7 +53,7 @@ pub struct PyFrameObject {
 }
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
-extern "C" {
+unsafe extern "C" {
     pub static mut PyFrame_Type: PyTypeObject;
 }
 
@@ -68,7 +68,7 @@ pub unsafe fn PyFrame_Check(op: *mut PyObject) -> c_int {
 //}
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
-extern "C" {
+unsafe extern "C" {
     pub fn PyFrame_New(
         tstate: *mut PyThreadState,
         code: *mut PyCodeObject,

@@ -52,7 +52,7 @@ pub const CO_FUTURE_UNICODE_LITERALS: c_int = 0x2_0000;
 pub const CO_MAXBLOCKS: usize = 20;
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
-extern "C" {
+unsafe extern "C" {
     pub static mut PyCode_Type: PyTypeObject;
 
     pub fn PyCode_New(

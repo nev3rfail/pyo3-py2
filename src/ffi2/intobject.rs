@@ -16,7 +16,7 @@ pub struct PyIntObject {
 }
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
-extern "C" {
+unsafe extern "C" {
     pub static mut PyInt_Type: PyTypeObject;
 }
 
@@ -32,7 +32,7 @@ pub unsafe fn PyInt_CheckExact(op: *mut PyObject) -> c_int {
 }
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
-extern "C" {
+unsafe extern "C" {
     pub fn PyInt_FromString(str: *mut c_char, pend: *mut *mut c_char, base: c_int)
         -> *mut PyObject;
     #[cfg(py_sys_config = "Py_USING_UNICODE")]

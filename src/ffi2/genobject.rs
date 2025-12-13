@@ -19,7 +19,7 @@ pub struct PyGenObject {
 }
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
-extern "C" {
+unsafe extern "C" {
     pub static mut PyGen_Type: PyTypeObject;
 }
 
@@ -34,7 +34,7 @@ pub unsafe fn PyGen_CheckExact(op: *mut PyObject) -> c_int {
 }
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
-extern "C" {
+unsafe extern "C" {
     pub fn PyGen_New(frame: *mut PyFrameObject) -> *mut PyObject;
     pub fn PyGen_NeedsFinalizing(op: *mut PyGenObject) -> c_int;
 }

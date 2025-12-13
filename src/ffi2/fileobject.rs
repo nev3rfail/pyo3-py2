@@ -3,7 +3,7 @@ use libc::{size_t, FILE};
 use std::os::raw::{c_char, c_int};
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
-extern "C" {
+unsafe extern "C" {
     pub static mut PyFile_Type: PyTypeObject;
 }
 
@@ -20,7 +20,7 @@ pub unsafe fn PyFile_CheckExact(op: *mut PyObject) -> c_int {
 pub const PY_STDIOTEXTMODE: &'static str = "b";
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
-extern "C" {
+unsafe extern "C" {
     pub fn PyFile_FromString(arg1: *mut c_char, arg2: *mut c_char) -> *mut PyObject;
     pub fn PyFile_SetBufSize(arg1: *mut PyObject, arg2: c_int);
     pub fn PyFile_SetEncoding(arg1: *mut PyObject, arg2: *const c_char) -> c_int;

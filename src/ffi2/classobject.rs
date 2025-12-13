@@ -50,7 +50,7 @@ pub struct PyMethodObject {
 }
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
-extern "C" {
+unsafe extern "C" {
     pub static mut PyClass_Type: PyTypeObject;
     pub static mut PyInstance_Type: PyTypeObject;
     pub static mut PyMethod_Type: PyTypeObject;
@@ -75,7 +75,7 @@ pub unsafe fn PyMethod_Check(op: *mut PyObject) -> c_int {
 }
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
-extern "C" {
+unsafe extern "C" {
     pub fn PyClass_New(
         arg1: *mut PyObject,
         arg2: *mut PyObject,

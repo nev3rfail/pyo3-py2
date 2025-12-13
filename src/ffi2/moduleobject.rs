@@ -4,7 +4,7 @@ use crate::ffi2::pyport::Py_ssize_t;
 use std::os::raw::{c_char, c_int, c_void};
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
-extern "C" {
+unsafe extern "C" {
     pub static mut PyModule_Type: PyTypeObject;
 }
 
@@ -19,7 +19,7 @@ pub unsafe fn PyModule_CheckExact(op: *mut PyObject) -> c_int {
 }
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
-extern "C" {
+unsafe extern "C" {
     pub fn PyModule_NewObject(name: *mut PyObject) -> *mut PyObject;
     pub fn PyModule_New(name: *const c_char) -> *mut PyObject;
     pub fn PyModule_GetDict(arg1: *mut PyObject) -> *mut PyObject;

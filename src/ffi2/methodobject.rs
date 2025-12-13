@@ -3,7 +3,7 @@ use std::os::raw::{c_char, c_int};
 use std::ptr;
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
-extern "C" {
+unsafe extern "C" {
     pub static mut PyCFunction_Type: PyTypeObject;
 }
 
@@ -21,7 +21,7 @@ pub type PyCFunctionWithKeywords =
 pub type PyNoArgsFunction = unsafe extern "C" fn(slf: *mut PyObject) -> *mut PyObject;
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
-extern "C" {
+unsafe extern "C" {
     pub fn PyCFunction_GetFunction(f: *mut PyObject) -> Option<PyCFunction>;
     pub fn PyCFunction_GetSelf(f: *mut PyObject) -> *mut PyObject;
     pub fn PyCFunction_GetFlags(f: *mut PyObject) -> c_int;
@@ -100,7 +100,7 @@ struct PyCFunctionObject {
 */
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
-extern "C" {
+unsafe extern "C" {
     pub fn Py_FindMethod(
         methods: *mut PyMethodDef,
         slf: *mut PyObject,

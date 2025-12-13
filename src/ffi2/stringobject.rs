@@ -18,7 +18,7 @@ pub struct PyStringObject {
 }
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
-extern "C" {
+unsafe extern "C" {
     pub static mut PyBaseString_Type: PyTypeObject;
     pub static mut PyString_Type: PyTypeObject;
 }
@@ -53,7 +53,7 @@ pub unsafe fn PyString_AS_STRING(op: *mut PyObject) -> *mut c_char {
 }
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
-extern "C" {
+unsafe extern "C" {
     pub fn PyString_FromString(v: *const c_char) -> *mut PyObject;
     pub fn PyString_FromStringAndSize(v: *const c_char, len: Py_ssize_t) -> *mut PyObject;
     pub fn PyString_FromFormat(format: *const c_char, ...) -> *mut PyObject;

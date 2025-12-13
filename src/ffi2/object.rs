@@ -553,7 +553,7 @@ pub unsafe fn PyHeapType_GET_MEMBERS(
 }
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
-extern "C" {
+unsafe extern "C" {
     pub fn PyType_IsSubtype(a: *mut PyTypeObject, b: *mut PyTypeObject) -> c_int;
 }
 
@@ -563,7 +563,7 @@ pub unsafe fn PyObject_TypeCheck(ob: *mut PyObject, tp: *mut PyTypeObject) -> c_
 }
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
-extern "C" {
+unsafe extern "C" {
     pub static mut PyType_Type: PyTypeObject;
     pub static mut PyBaseObject_Type: PyTypeObject;
     pub static mut PySuper_Type: PyTypeObject;
@@ -580,7 +580,7 @@ pub unsafe fn PyType_CheckExact(op: *mut PyObject) -> c_int {
 }
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
-extern "C" {
+unsafe extern "C" {
     pub fn PyType_Ready(t: *mut PyTypeObject) -> c_int;
     pub fn PyType_GenericAlloc(t: *mut PyTypeObject, nitems: Py_ssize_t) -> *mut PyObject;
     pub fn PyType_GenericNew(
@@ -610,7 +610,7 @@ pub unsafe fn PyObject_Bytes(o: *mut PyObject) -> *mut PyObject {
 }
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
-extern "C" {
+unsafe extern "C" {
     #[cfg(py_sys_config = "Py_USING_UNICODE")]
     pub fn PyObject_Unicode(o: *mut PyObject) -> *mut PyObject;
 
@@ -804,7 +804,7 @@ pub unsafe fn Py_XDECREF(op: *mut PyObject) {
 }
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
-extern "C" {
+unsafe extern "C" {
     pub fn Py_IncRef(o: *mut PyObject);
     pub fn Py_DecRef(o: *mut PyObject);
 
@@ -841,7 +841,7 @@ pub fn PySuper_Check(_arg1: *mut PyObject) -> c_int {
 }
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
-extern "C" {
+unsafe extern "C" {
     fn _PyTrash_thread_deposit_object(o: *mut PyObject);
     fn _PyTrash_thread_destroy_chain();
 }

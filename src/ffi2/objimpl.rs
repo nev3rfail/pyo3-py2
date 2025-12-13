@@ -4,7 +4,7 @@ use libc::size_t;
 use std::os::raw::{c_char, c_int, c_void};
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
-extern "C" {
+unsafe extern "C" {
     pub fn PyObject_Malloc(arg1: size_t) -> *mut c_void;
     pub fn PyObject_Realloc(arg1: *mut c_void, arg2: size_t) -> *mut c_void;
     pub fn PyObject_Free(arg1: *mut c_void);

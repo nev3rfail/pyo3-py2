@@ -2,7 +2,7 @@ use crate::ffi2::object::*;
 use std::os::raw::{c_char, c_int, c_void};
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
-extern "C" {
+unsafe extern "C" {
     pub static mut PyCObject_Type: PyTypeObject;
 }
 
@@ -12,7 +12,7 @@ pub unsafe fn PyCObject_Check(op: *mut PyObject) -> c_int {
 }
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
-extern "C" {
+unsafe extern "C" {
     pub fn PyCObject_FromVoidPtr(
         cobj: *mut c_void,
         destruct: Option<unsafe extern "C" fn(arg1: *mut c_void)>,

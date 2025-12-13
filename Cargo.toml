@@ -12,6 +12,7 @@ categories = ["api-bindings", "development-tools::ffi"]
 license = "Apache-2.0"
 exclude = ["/.gitignore", ".travis.yml", ".cargo/config", "appveyor.yml"]
 build = "build.rs"
+edition = "2024"
 
 [badges]
 travis-ci = { repository = "PyO3/pyo3", branch = "master" }

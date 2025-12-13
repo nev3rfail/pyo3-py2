@@ -6,7 +6,7 @@ use crate::ffi2::pythonrun::PyCompilerFlags;
 use std::os::raw::{c_char, c_int, c_void};
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
-extern "C" {
+unsafe extern "C" {
     pub fn PyEval_CallObjectWithKeywords(
         callable: *mut PyObject,
         args: *mut PyObject,
@@ -50,7 +50,7 @@ extern "C" {
 
 #[cfg(py_sys_config = "WITH_THREAD")]
 #[cfg_attr(windows, link(name = "pythonXY"))]
-extern "C" {
+unsafe extern "C" {
     pub fn PyEval_ThreadsInitialized() -> c_int;
     pub fn PyEval_InitThreads();
     pub fn PyEval_AcquireLock();

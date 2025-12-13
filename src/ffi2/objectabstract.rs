@@ -15,7 +15,7 @@ pub unsafe fn PyObject_DelAttr(o: *mut PyObject, attr_name: *mut PyObject) -> c_
 }
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
-extern "C" {
+unsafe extern "C" {
     pub fn PyObject_Cmp(o1: *mut PyObject, o2: *mut PyObject, result: *mut c_int) -> c_int;
     pub fn PyObject_Call(
         callable_object: *mut PyObject,

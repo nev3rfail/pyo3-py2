@@ -63,7 +63,7 @@ pub enum PyGILState_STATE {
 }
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
-extern "C" {
+unsafe extern "C" {
     static mut _PyThreadState_Current: *mut PyThreadState;
     //static mut _PyThreadState_GetFrame: PyThreadFrameGetter;
 

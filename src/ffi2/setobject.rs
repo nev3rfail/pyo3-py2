@@ -5,7 +5,7 @@ use std::os::raw::c_int;
 //enum PySetObject { /* representation hidden */ }
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
-extern "C" {
+unsafe extern "C" {
     pub static mut PySet_Type: PyTypeObject;
     pub static mut PyFrozenSet_Type: PyTypeObject;
 }
@@ -43,7 +43,7 @@ pub unsafe fn PyFrozenSet_Check(ob: *mut PyObject) -> c_int {
 }
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
-extern "C" {
+unsafe extern "C" {
     pub fn PySet_New(iterable: *mut PyObject) -> *mut PyObject;
     pub fn PyFrozenSet_New(iterable: *mut PyObject) -> *mut PyObject;
     pub fn PySet_Size(anyset: *mut PyObject) -> Py_ssize_t;

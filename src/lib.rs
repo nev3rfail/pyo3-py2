@@ -136,7 +136,7 @@ pub extern crate libc;
 pub extern crate mashup;
 extern crate pyo3cls;
 extern crate spin;
-
+pub use std;
 pub use crate::class::*;
 pub use crate::conversion::{
     FromPyObject, IntoPyObject, IntoPyTuple, PyTryFrom, PyTryInto, ReturnTypeIntoPyResult,

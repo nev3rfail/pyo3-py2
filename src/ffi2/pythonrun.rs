@@ -28,7 +28,7 @@ pub enum Struct__node {}
 pub enum Struct_symtable {}
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
-extern "C" {
+unsafe extern "C" {
     pub fn Py_SetProgramName(arg1: *mut c_char);
     pub fn Py_GetProgramName() -> *mut c_char;
     pub fn Py_SetPythonHome(arg1: *mut c_char);

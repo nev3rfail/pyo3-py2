@@ -5,7 +5,7 @@ use std::os::raw::{c_char, c_int, c_long};
 use std::ptr;
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
-extern "C" {
+unsafe extern "C" {
     pub fn PyArg_Parse(args: *mut PyObject, format: *const c_char, ...) -> c_int;
     pub fn PyArg_ParseTuple(args: *mut PyObject, format: *const c_char, ...) -> c_int;
     pub fn PyArg_ParseTupleAndKeywords(
