@@ -335,7 +335,7 @@ macro_rules! py_func_set {
                     ),
                 ))
             } else {
-                let name = py.mut_from_borrowed_ptr::<$crate::types::PyObjectRef>(name);
+                let name = py.from_borrowed_ptr::<$crate::types::PyObjectRef>(name);
                 let value = py.from_borrowed_ptr::<$crate::types::PyObjectRef>(value);
                 match name.extract() {
                     Ok(name) => match value.extract() {
