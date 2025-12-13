@@ -34,7 +34,7 @@ def get_py_version_cfgs():
 
 
 install_requires = []
-tests_require = install_requires + ["pytest", "pytest-benchmark"]
+tests_require = install_requires + ["pytest"]
 
 setup(
     name="string-sum",
@@ -51,7 +51,7 @@ setup(
     packages=["string_sum"],
     rust_extensions=[
         RustExtension(
-            "string_sum", "Cargo.toml", rustc_flags=get_py_version_cfgs()
+            "string_sum.__init__", "Cargo.toml", rustc_flags=get_py_version_cfgs()
         )
     ],
     install_requires=install_requires,

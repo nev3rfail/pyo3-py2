@@ -156,6 +156,9 @@ fn main() -> PyResult<()> {
 
 ## Tests
 ```bash
+git clean -xdf
+```
+```bash
 c:\python27\python -m pip install virtualenv;
 ```
 ```bash
