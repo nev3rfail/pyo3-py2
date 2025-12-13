@@ -35,7 +35,7 @@ impl PyObject {
     pub unsafe fn from_owned_ptr(_py: Python, ptr: *mut ffi::PyObject) -> PyObject {
         debug_assert!(
             !ptr.is_null() && ffi::Py_REFCNT(ptr) > 0,
-            format!("REFCNT: {:?} - {:?}", ptr, ffi::Py_REFCNT(ptr))
+            "REFCNT: {:?} - {:?}", ptr, ffi::Py_REFCNT(ptr)
         );
         PyObject(NonNull::new_unchecked(ptr))
     }
@@ -80,7 +80,7 @@ impl PyObject {
     pub unsafe fn from_borrowed_ptr(_py: Python, ptr: *mut ffi::PyObject) -> PyObject {
         debug_assert!(
             !ptr.is_null() && ffi::Py_REFCNT(ptr) > 0,
-            format!("REFCNT: {:?} - {:?}", ptr, ffi::Py_REFCNT(ptr))
+            "REFCNT: {:?} - {:?}", ptr, ffi::Py_REFCNT(ptr)
         );
         ffi::Py_INCREF(ptr);
         PyObject(NonNull::new_unchecked(ptr))

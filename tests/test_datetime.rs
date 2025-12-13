@@ -4,8 +4,7 @@ extern crate pyo3;
 
 use pyo3::ffi::*;
 use pyo3::prelude::*;
-use pyo3::types::{PyDate, PyDateTime, PyDict, PyObjectRef, PyTime};
-use std::iter;
+use pyo3::types::{PyDict, PyObjectRef};
 
 fn _get_subclasses<'p>(
     py: &'p Python,

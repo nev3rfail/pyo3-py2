@@ -111,7 +111,7 @@ impl<T> Py<T> {
     pub unsafe fn from_owned_ptr(ptr: *mut ffi::PyObject) -> Py<T> {
         debug_assert!(
             !ptr.is_null() && ffi::Py_REFCNT(ptr) > 0,
-            format!("REFCNT: {:?} - {:?}", ptr, ffi::Py_REFCNT(ptr))
+            "REFCNT: {:?} - {:?}", ptr, ffi::Py_REFCNT(ptr)
         );
         Py(NonNull::new_unchecked(ptr), std::marker::PhantomData)
     }
@@ -147,7 +147,7 @@ impl<T> Py<T> {
     pub unsafe fn from_borrowed_ptr(ptr: *mut ffi::PyObject) -> Py<T> {
         debug_assert!(
             !ptr.is_null() && ffi::Py_REFCNT(ptr) > 0,
-             format!("REFCNT: {:?} - {:?}", ptr, ffi::Py_REFCNT(ptr))
+             "REFCNT: {:?} - {:?}", ptr, ffi::Py_REFCNT(ptr)
         );
         ffi::Py_INCREF(ptr);
         Py(NonNull::new_unchecked(ptr), std::marker::PhantomData)

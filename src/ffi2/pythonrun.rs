@@ -4,12 +4,12 @@ use crate::ffi2::pyarena::PyArena;
 use crate::ffi2::pystate::PyThreadState;
 use libc::{c_char, c_int, FILE};
 
-pub const PyCF_MASK: c_int = (CO_FUTURE_DIVISION
+pub const PyCF_MASK: c_int = CO_FUTURE_DIVISION
     | CO_FUTURE_ABSOLUTE_IMPORT
     | CO_FUTURE_WITH_STATEMENT
     | CO_FUTURE_PRINT_FUNCTION
-    | CO_FUTURE_UNICODE_LITERALS);
-pub const PyCF_MASK_OBSOLETE: c_int = (CO_NESTED);
+    | CO_FUTURE_UNICODE_LITERALS;
+pub const PyCF_MASK_OBSOLETE: c_int = CO_NESTED;
 pub const PyCF_SOURCE_IS_UTF8: c_int = 0x0100;
 pub const PyCF_DONT_IMPLY_DEDENT: c_int = 0x0200;
 pub const PyCF_ONLY_AST: c_int = 0x0400;

@@ -51,7 +51,7 @@ fn len() {
 
 #[pyclass]
 struct Iterator {
-    iter: Box<iter::Iterator<Item = i32> + Send>,
+    iter: Box<dyn iter::Iterator<Item = i32> + Send>,
     token: PyToken,
 }
 

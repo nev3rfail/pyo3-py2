@@ -5,8 +5,8 @@ use crate::types::PyObjectRef;
 use spin;
 use std::{any, marker, rc, sync};
 
-static START: sync::Once = sync::ONCE_INIT;
-static START_PYO3: sync::Once = sync::ONCE_INIT;
+static START: sync::Once = sync::Once::new();
+static START_PYO3: sync::Once = sync::Once::new();
 
 /// Prepares the use of Python in a free-threaded context.
 ///

@@ -16,7 +16,7 @@ pub fn indoc(commands: &str) -> String {
     }
 
     commands
-        .trim_right()
+        .trim_end()
         .replace(&("\n".to_string() + &indent), "\n")
         + "\n"
 }
@@ -54,7 +54,7 @@ macro_rules! py_expect_exception {
         let res = $py.run($code, None, Some(d));
         let err = res.unwrap_err();
         if !err.matches($py, $py.get_type::<pyo3::exceptions::$err>()) {
-            panic!(format!("Expected {} but got {:?}", stringify!($err), err))
+            panic!("Expected {} but got {:?}", stringify!($err), err)
         }
     }};
 }

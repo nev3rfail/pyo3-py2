@@ -126,23 +126,23 @@ pub const PyBUF_SIMPLE: c_int = 0;
 pub const PyBUF_WRITABLE: c_int = 0x0001;
 pub const PyBUF_FORMAT: c_int = 0x0004;
 pub const PyBUF_ND: c_int = 0x0008;
-pub const PyBUF_STRIDES: c_int = (0x0010 | PyBUF_ND);
-pub const PyBUF_C_CONTIGUOUS: c_int = (0x0020 | PyBUF_STRIDES);
-pub const PyBUF_F_CONTIGUOUS: c_int = (0x0040 | PyBUF_STRIDES);
-pub const PyBUF_ANY_CONTIGUOUS: c_int = (0x0080 | PyBUF_STRIDES);
-pub const PyBUF_INDIRECT: c_int = (0x0100 | PyBUF_STRIDES);
+pub const PyBUF_STRIDES: c_int = 0x0010 | PyBUF_ND;
+pub const PyBUF_C_CONTIGUOUS: c_int = 0x0020 | PyBUF_STRIDES;
+pub const PyBUF_F_CONTIGUOUS: c_int = 0x0040 | PyBUF_STRIDES;
+pub const PyBUF_ANY_CONTIGUOUS: c_int = 0x0080 | PyBUF_STRIDES;
+pub const PyBUF_INDIRECT: c_int = 0x0100 | PyBUF_STRIDES;
 
-pub const PyBUF_CONTIG: c_int = (PyBUF_ND | PyBUF_WRITABLE);
-pub const PyBUF_CONTIG_RO: c_int = (PyBUF_ND);
+pub const PyBUF_CONTIG: c_int = PyBUF_ND | PyBUF_WRITABLE;
+pub const PyBUF_CONTIG_RO: c_int = PyBUF_ND;
 
-pub const PyBUF_STRIDED: c_int = (PyBUF_STRIDES | PyBUF_WRITABLE);
-pub const PyBUF_STRIDED_RO: c_int = (PyBUF_STRIDES);
+pub const PyBUF_STRIDED: c_int = PyBUF_STRIDES | PyBUF_WRITABLE;
+pub const PyBUF_STRIDED_RO: c_int = PyBUF_STRIDES;
 
-pub const PyBUF_RECORDS: c_int = (PyBUF_STRIDES | PyBUF_WRITABLE | PyBUF_FORMAT);
-pub const PyBUF_RECORDS_RO: c_int = (PyBUF_STRIDES | PyBUF_FORMAT);
+pub const PyBUF_RECORDS: c_int = PyBUF_STRIDES | PyBUF_WRITABLE | PyBUF_FORMAT;
+pub const PyBUF_RECORDS_RO: c_int = PyBUF_STRIDES | PyBUF_FORMAT;
 
-pub const PyBUF_FULL: c_int = (PyBUF_INDIRECT | PyBUF_WRITABLE | PyBUF_FORMAT);
-pub const PyBUF_FULL_RO: c_int = (PyBUF_INDIRECT | PyBUF_FORMAT);
+pub const PyBUF_FULL: c_int = PyBUF_INDIRECT | PyBUF_WRITABLE | PyBUF_FORMAT;
+pub const PyBUF_FULL_RO: c_int = PyBUF_INDIRECT | PyBUF_FORMAT;
 
 // buffertype:
 pub const PyBUF_READ: c_int = 0x100;
@@ -672,72 +672,72 @@ extern "C" {
 pub const Py_PRINT_RAW: c_int = 1; // No string quotes etc.
 
 // PyBufferProcs contains bf_getcharbuffer
-pub const Py_TPFLAGS_HAVE_GETCHARBUFFER: c_long = (1 << 0);
+pub const Py_TPFLAGS_HAVE_GETCHARBUFFER: c_long = 1 << 0;
 
 // PySequenceMethods contains sq_contains
-pub const Py_TPFLAGS_HAVE_SEQUENCE_IN: c_long = (1 << 1);
+pub const Py_TPFLAGS_HAVE_SEQUENCE_IN: c_long = 1 << 1;
 
 // PySequenceMethods and PyNumberMethods contain in-place operators
-pub const Py_TPFLAGS_HAVE_INPLACEOPS: c_long = (1 << 3);
+pub const Py_TPFLAGS_HAVE_INPLACEOPS: c_long = 1 << 3;
 
 // PyNumberMethods do their own coercion
-pub const Py_TPFLAGS_CHECKTYPES: c_long = (1 << 4);
+pub const Py_TPFLAGS_CHECKTYPES: c_long = 1 << 4;
 
 // tp_richcompare is defined
-pub const Py_TPFLAGS_HAVE_RICHCOMPARE: c_long = (1 << 5);
+pub const Py_TPFLAGS_HAVE_RICHCOMPARE: c_long = 1 << 5;
 
 // Objects which are weakly referencable if their tp_weaklistoffset is >0
-pub const Py_TPFLAGS_HAVE_WEAKREFS: c_long = (1 << 6);
+pub const Py_TPFLAGS_HAVE_WEAKREFS: c_long = 1 << 6;
 
 // tp_iter is defined
-pub const Py_TPFLAGS_HAVE_ITER: c_long = (1 << 7);
+pub const Py_TPFLAGS_HAVE_ITER: c_long = 1 << 7;
 
 // New members introduced by Python 2.2 exist
-pub const Py_TPFLAGS_HAVE_CLASS: c_long = (1 << 8);
+pub const Py_TPFLAGS_HAVE_CLASS: c_long = 1 << 8;
 
 // Set if the type object is dynamically allocated
-pub const Py_TPFLAGS_HEAPTYPE: c_long = (1 << 9);
+pub const Py_TPFLAGS_HEAPTYPE: c_long = 1 << 9;
 
 // Set if the type allows subclassing
-pub const Py_TPFLAGS_BASETYPE: c_long = (1 << 10);
+pub const Py_TPFLAGS_BASETYPE: c_long = 1 << 10;
 
 // Set if the type is 'ready' -- fully initialized
-pub const Py_TPFLAGS_READY: c_long = (1 << 12);
+pub const Py_TPFLAGS_READY: c_long = 1 << 12;
 
 // Set while the type is being 'readied', to prevent recursive ready calls
-pub const Py_TPFLAGS_READYING: c_long = (1 << 13);
+pub const Py_TPFLAGS_READYING: c_long = 1 << 13;
 
 // Objects support garbage collection (see objimp.h)
-pub const Py_TPFLAGS_HAVE_GC: c_long = (1 << 14);
+pub const Py_TPFLAGS_HAVE_GC: c_long = 1 << 14;
 
 // Two bits are preserved for Stackless Python, next after this is 17.
 const Py_TPFLAGS_HAVE_STACKLESS_EXTENSION: c_long = 0;
 
 // Objects support nb_index in PyNumberMethods
-pub const Py_TPFLAGS_HAVE_INDEX: c_long = (1 << 17);
+pub const Py_TPFLAGS_HAVE_INDEX: c_long = 1 << 17;
 
 // Objects support type attribute cache
-pub const Py_TPFLAGS_HAVE_VERSION_TAG: c_long = (1 << 18);
-pub const Py_TPFLAGS_VALID_VERSION_TAG: c_long = (1 << 19);
+pub const Py_TPFLAGS_HAVE_VERSION_TAG: c_long = 1 << 18;
+pub const Py_TPFLAGS_VALID_VERSION_TAG: c_long = 1 << 19;
 
 /* Type is abstract and cannot be instantiated */
-pub const Py_TPFLAGS_IS_ABSTRACT: c_long = (1 << 20);
+pub const Py_TPFLAGS_IS_ABSTRACT: c_long = 1 << 20;
 
 /* Has the new buffer protocol */
-pub const Py_TPFLAGS_HAVE_NEWBUFFER: c_long = (1 << 21);
+pub const Py_TPFLAGS_HAVE_NEWBUFFER: c_long = 1 << 21;
 
 /* These flags are used to determine if a type is a subclass. */
-pub const Py_TPFLAGS_INT_SUBCLASS: c_long = (1 << 23);
-pub const Py_TPFLAGS_LONG_SUBCLASS: c_long = (1 << 24);
-pub const Py_TPFLAGS_LIST_SUBCLASS: c_long = (1 << 25);
-pub const Py_TPFLAGS_TUPLE_SUBCLASS: c_long = (1 << 26);
-pub const Py_TPFLAGS_STRING_SUBCLASS: c_long = (1 << 27);
-pub const Py_TPFLAGS_UNICODE_SUBCLASS: c_long = (1 << 28);
-pub const Py_TPFLAGS_DICT_SUBCLASS: c_long = (1 << 29);
-pub const Py_TPFLAGS_BASE_EXC_SUBCLASS: c_long = (1 << 30);
-pub const Py_TPFLAGS_TYPE_SUBCLASS: c_long = (1 << 31);
+pub const Py_TPFLAGS_INT_SUBCLASS: c_long = 1 << 23;
+pub const Py_TPFLAGS_LONG_SUBCLASS: c_long = 1 << 24;
+pub const Py_TPFLAGS_LIST_SUBCLASS: c_long = 1 << 25;
+pub const Py_TPFLAGS_TUPLE_SUBCLASS: c_long = 1 << 26;
+pub const Py_TPFLAGS_STRING_SUBCLASS: c_long = 1 << 27;
+pub const Py_TPFLAGS_UNICODE_SUBCLASS: c_long = 1 << 28;
+pub const Py_TPFLAGS_DICT_SUBCLASS: c_long = 1 << 29;
+pub const Py_TPFLAGS_BASE_EXC_SUBCLASS: c_long = 1 << 30;
+pub const Py_TPFLAGS_TYPE_SUBCLASS: c_long = 1 << 31;
 
-pub const Py_TPFLAGS_DEFAULT: c_long = (Py_TPFLAGS_HAVE_GETCHARBUFFER
+pub const Py_TPFLAGS_DEFAULT: c_long = Py_TPFLAGS_HAVE_GETCHARBUFFER
     | Py_TPFLAGS_HAVE_SEQUENCE_IN
     | Py_TPFLAGS_HAVE_INPLACEOPS
     | Py_TPFLAGS_HAVE_RICHCOMPARE
@@ -746,7 +746,7 @@ pub const Py_TPFLAGS_DEFAULT: c_long = (Py_TPFLAGS_HAVE_GETCHARBUFFER
     | Py_TPFLAGS_HAVE_CLASS
     | Py_TPFLAGS_HAVE_STACKLESS_EXTENSION
     | Py_TPFLAGS_HAVE_INDEX
-    | 0);
+    | 0;
 
 #[inline]
 pub unsafe fn PyType_HasFeature(t: *mut PyTypeObject, f: c_long) -> c_int {
