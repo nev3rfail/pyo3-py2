@@ -125,7 +125,7 @@ impl ReleasePool {
         }
     }
 
-    unsafe fn release_pointers(&mut self) {
+    unsafe fn release_pointers(&mut self) { unsafe {
         let mut v = self.p.lock();
         let vec = &mut **v;
         if vec.is_empty() {
@@ -141,9 +141,9 @@ impl ReleasePool {
             ffi::Py_DECREF(*ptr);
         }
         vec.set_len(0);
-    }
+    }}
 
-    pub unsafe fn drain(&mut self, owned: usize, borrowed: usize, pointers: bool) {
+    pub unsafe fn drain(&mut self, owned: usize, borrowed: usize, pointers: bool) { unsafe {
         // Release owned objects(call decref)
         while owned < self.owned.len() {
             let last = self.owned.pop_back().unwrap();
@@ -157,7 +157,7 @@ impl ReleasePool {
         }
 
         self.obj.clear();
-    }
+    }}
 }
 
 static mut POOL: *mut ReleasePool = ::std::ptr::null_mut();
@@ -209,7 +209,7 @@ impl Drop for GILPool {
     }
 }
 
-pub unsafe fn register_any<'p, T: 'static>(obj: T) -> &'p T {
+pub unsafe fn register_any<'p, T: 'static>(obj: T) -> &'p T { unsafe {
     let pool: &'static mut ReleasePool = &mut *POOL;
 
     pool.obj.push(Box::new(obj));
@@ -219,22 +219,22 @@ pub unsafe fn register_any<'p, T: 'static>(obj: T) -> &'p T {
         .as_ref()
         .downcast_ref::<T>()
         .unwrap()
-}
+}}
 
-pub unsafe fn register_pointer(obj: *mut ffi::PyObject) {
+pub unsafe fn register_pointer(obj: *mut ffi::PyObject) { unsafe {
     let pool = &mut *POOL;
     (**pool.p.lock()).push(obj);
-}
+}}
 
-pub unsafe fn register_owned(_py: Python, obj: *mut ffi::PyObject) -> &PyObjectRef {
+pub unsafe fn register_owned(_py: Python, obj: *mut ffi::PyObject) -> &PyObjectRef { unsafe {
     let pool = &mut *POOL;
     &*(pool.owned.push_back(obj) as *const _ as *const PyObjectRef)
-}
+}}
 
-pub unsafe fn register_borrowed(_py: Python, obj: *mut ffi::PyObject) -> &PyObjectRef {
+pub unsafe fn register_borrowed(_py: Python, obj: *mut ffi::PyObject) -> &PyObjectRef { unsafe {
     let pool = &mut *POOL;
     &*(pool.borrowed.push_back(obj) as *const _ as *const PyObjectRef)
-}
+}}
 
 impl GILGuard {
     /// Acquires the global interpreter lock, which allows access to the Python runtime.

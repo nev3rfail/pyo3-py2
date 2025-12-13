@@ -38,15 +38,15 @@ unsafe extern "C" {
 }
 
 #[inline]
-pub unsafe fn PyComplex_Check(op: *mut PyObject) -> c_int {
-    PyObject_TypeCheck(op, &mut PyComplex_Type)
-}
+pub unsafe fn PyComplex_Check(op: *mut PyObject) -> c_int { unsafe {
+    PyObject_TypeCheck(op, &raw mut PyComplex_Type)
+}}
 
 #[inline]
-pub unsafe fn PyComplex_CheckExact(op: *mut PyObject) -> c_int {
-    let u: *mut PyTypeObject = &mut PyComplex_Type;
+pub unsafe fn PyComplex_CheckExact(op: *mut PyObject) -> c_int { unsafe {
+    let u: *mut PyTypeObject = &raw mut PyComplex_Type;
     (Py_TYPE(op) == u) as c_int
-}
+}}
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
 unsafe extern "C" {

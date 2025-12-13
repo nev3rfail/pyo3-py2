@@ -20,15 +20,15 @@ unsafe extern "C" {
 }
 
 #[inline]
-pub unsafe fn PyFloat_Check(op: *mut PyObject) -> c_int {
-    PyObject_TypeCheck(op, &mut PyFloat_Type)
-}
+pub unsafe fn PyFloat_Check(op: *mut PyObject) -> c_int { unsafe {
+    PyObject_TypeCheck(op, &raw mut PyFloat_Type)
+}}
 
 #[inline]
-pub unsafe fn PyFloat_CheckExact(op: *mut PyObject) -> c_int {
-    let u: *mut PyTypeObject = &mut PyFloat_Type;
+pub unsafe fn PyFloat_CheckExact(op: *mut PyObject) -> c_int { unsafe {
+    let u: *mut PyTypeObject = &raw mut PyFloat_Type;
     (Py_TYPE(op) == u) as c_int
-}
+}}
 
 pub const PyFloat_STR_PRECISION: c_int = 12;
 
@@ -44,6 +44,6 @@ unsafe extern "C" {
     pub fn PyFloat_ClearFreeList() -> c_int;
 }
 
-pub unsafe fn PyFloat_AS_DOUBLE(pyfloat: *mut PyObject) -> c_double {
+pub unsafe fn PyFloat_AS_DOUBLE(pyfloat: *mut PyObject) -> c_double { unsafe {
     (*(pyfloat as *mut PyFloatObject)).ob_fval
-}
+}}

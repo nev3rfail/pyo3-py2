@@ -8,10 +8,10 @@ unsafe extern "C" {
 }
 
 #[inline]
-pub unsafe fn PyBuffer_Check(op: *mut PyObject) -> c_int {
-    let u: *mut PyTypeObject = &mut PyBuffer_Type;
+pub unsafe fn PyBuffer_Check(op: *mut PyObject) -> c_int { unsafe {
+    let u: *mut PyTypeObject = &raw mut PyBuffer_Type;
     (Py_TYPE(op) == u) as c_int
-}
+}}
 
 pub const Py_END_OF_BUFFER: Py_ssize_t = -1;
 

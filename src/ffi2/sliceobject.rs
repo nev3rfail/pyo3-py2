@@ -8,9 +8,9 @@ unsafe extern "C" {
 }
 
 #[inline]
-pub unsafe fn Py_Ellipsis() -> *mut PyObject {
-    &mut _Py_EllipsisObject
-}
+pub unsafe fn Py_Ellipsis() -> *mut PyObject { unsafe {
+    &raw mut _Py_EllipsisObject
+}}
 
 #[repr(C)]
 #[derive(Copy, Clone)]
@@ -33,9 +33,9 @@ unsafe extern "C" {
 }
 
 #[inline]
-pub unsafe fn PySlice_Check(op: *mut PyObject) -> c_int {
-    (Py_TYPE(op) == &mut PySlice_Type) as c_int
-}
+pub unsafe fn PySlice_Check(op: *mut PyObject) -> c_int { unsafe {
+    (Py_TYPE(op) == &raw mut PySlice_Type) as c_int
+}}
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
 unsafe extern "C" {

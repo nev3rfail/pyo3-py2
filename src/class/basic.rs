@@ -465,7 +465,7 @@ where
         ) -> *mut ffi::PyObject
         where
             T: for<'p> PyObjectRichcmpProtocol<'p>,
-        {
+        { unsafe {
             let _pool = crate::GILPool::new();
             let py = Python::assume_gil_acquired();
             let slf = py.from_borrowed_ptr::<T>(slf);
@@ -485,7 +485,7 @@ where
                     ptr::null_mut()
                 }
             }
-        }
+        }}
         Some(wrap::<T>)
     }
 }

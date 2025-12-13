@@ -260,7 +260,7 @@ where
             py: Python,
             a: *mut ffi::PyObject,
             b: *mut ffi::PyObject,
-        ) -> PyResult<Ordering> {
+        ) -> PyResult<Ordering> { unsafe {
             let result = ffi::PyObject_RichCompareBool(a, b, ffi::Py_EQ);
             if result == 1 {
                 return Ok(Ordering::Equal);
@@ -282,7 +282,7 @@ where
             Err(crate::exceptions::TypeError::py_err(
                 "ObjectProtocol::compare(): All comparisons returned false",
             ))
-        }
+        }}
 
         other.with_borrowed_ptr(self.py(), |other| unsafe {
             do_compare(self.py(), self.as_ptr(), other)

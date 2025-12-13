@@ -20,6 +20,6 @@ unsafe extern "C" {
 }
 
 #[inline]
-pub unsafe fn PyErr_Warn(category: *mut PyObject, msg: *const c_char) -> c_int {
+pub unsafe fn PyErr_Warn(category: *mut PyObject, msg: *const c_char) -> c_int { unsafe {
     PyErr_WarnEx(category, msg, 1)
-}
+}}

@@ -29,9 +29,9 @@ pub unsafe fn PyImport_ImportModuleEx(
     globals: *mut PyObject,
     locals: *mut PyObject,
     fromlist: *mut PyObject,
-) -> *mut PyObject {
+) -> *mut PyObject { unsafe {
     PyImport_ImportModuleLevel(name, globals, locals, fromlist, -1)
-}
+}}
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
 unsafe extern "C" {

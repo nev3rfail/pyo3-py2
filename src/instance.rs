@@ -108,13 +108,13 @@ impl<T> Py<T> {
     /// This moves ownership over the pointer into the `Py<T>`.
     /// Undefined behavior if the pointer is NULL or invalid.
     #[inline]
-    pub unsafe fn from_owned_ptr(ptr: *mut ffi::PyObject) -> Py<T> {
+    pub unsafe fn from_owned_ptr(ptr: *mut ffi::PyObject) -> Py<T> { unsafe {
         debug_assert!(
             !ptr.is_null() && ffi::Py_REFCNT(ptr) > 0,
             "REFCNT: {:?} - {:?}", ptr, ffi::Py_REFCNT(ptr)
         );
         Py(NonNull::new_unchecked(ptr), std::marker::PhantomData)
-    }
+    }}
 
     /// Creates a `Py<T>` instance for the given FFI pointer.
     /// Panics if the pointer is `null`.
@@ -144,14 +144,14 @@ impl<T> Py<T> {
     /// Calls Py_INCREF() on the ptr.
     /// Undefined behavior if the pointer is NULL or invalid.
     #[inline]
-    pub unsafe fn from_borrowed_ptr(ptr: *mut ffi::PyObject) -> Py<T> {
+    pub unsafe fn from_borrowed_ptr(ptr: *mut ffi::PyObject) -> Py<T> { unsafe {
         debug_assert!(
             !ptr.is_null() && ffi::Py_REFCNT(ptr) > 0,
              "REFCNT: {:?} - {:?}", ptr, ffi::Py_REFCNT(ptr)
         );
         ffi::Py_INCREF(ptr);
         Py(NonNull::new_unchecked(ptr), std::marker::PhantomData)
-    }
+    }}
 
     /// Gets the reference count of the ffi::PyObject pointer.
     #[inline]

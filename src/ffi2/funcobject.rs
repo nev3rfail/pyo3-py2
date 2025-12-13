@@ -7,10 +7,10 @@ unsafe extern "C" {
 }
 
 #[inline]
-pub unsafe fn PyFunction_Check(op: *mut PyObject) -> c_int {
-    let u: *mut PyTypeObject = &mut PyFunction_Type;
+pub unsafe fn PyFunction_Check(op: *mut PyObject) -> c_int { unsafe {
+    let u: *mut PyTypeObject = &raw mut PyFunction_Type;
     (Py_TYPE(op) == u) as c_int
-}
+}}
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
 unsafe extern "C" {

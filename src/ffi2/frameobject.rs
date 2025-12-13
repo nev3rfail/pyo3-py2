@@ -58,9 +58,9 @@ unsafe extern "C" {
 }
 
 #[inline]
-pub unsafe fn PyFrame_Check(op: *mut PyObject) -> c_int {
-    ((*op).ob_type == &mut PyFrame_Type) as c_int
-}
+pub unsafe fn PyFrame_Check(op: *mut PyObject) -> c_int { unsafe {
+    ((*op).ob_type == &raw mut PyFrame_Type) as c_int
+}}
 
 //#[inline]
 //pub unsafe fn PyFrame_IsRestricted(f: *mut PyFrameObject) -> c_int {

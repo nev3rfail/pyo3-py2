@@ -8,10 +8,10 @@ unsafe extern "C" {
 }
 
 #[inline]
-pub unsafe fn PyCFunction_Check(op: *mut PyObject) -> c_int {
-    let u: *mut PyTypeObject = &mut PyCFunction_Type;
+pub unsafe fn PyCFunction_Check(op: *mut PyObject) -> c_int { unsafe {
+    let u: *mut PyTypeObject = &raw mut PyCFunction_Type;
     (Py_TYPE(op) == u) as c_int
-}
+}}
 
 pub type PyCFunction =
     unsafe extern "C" fn(slf: *mut PyObject, args: *mut PyObject) -> *mut PyObject;
@@ -120,6 +120,6 @@ unsafe extern "C" {
 }
 
 #[inline]
-pub unsafe fn PyCFunction_New(ml: *mut PyMethodDef, slf: *mut PyObject) -> *mut PyObject {
+pub unsafe fn PyCFunction_New(ml: *mut PyMethodDef, slf: *mut PyObject) -> *mut PyObject { unsafe {
     PyCFunction_NewEx(ml, slf, ptr::null_mut())
-}
+}}

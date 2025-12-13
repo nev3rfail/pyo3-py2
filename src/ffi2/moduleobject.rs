@@ -9,14 +9,14 @@ unsafe extern "C" {
 }
 
 #[inline]
-pub unsafe fn PyModule_Check(op: *mut PyObject) -> c_int {
-    PyObject_TypeCheck(op, &mut PyModule_Type)
-}
+pub unsafe fn PyModule_Check(op: *mut PyObject) -> c_int { unsafe {
+    PyObject_TypeCheck(op, &raw mut PyModule_Type)
+}}
 
 #[inline]
-pub unsafe fn PyModule_CheckExact(op: *mut PyObject) -> c_int {
-    (Py_TYPE(op) == &mut PyModule_Type) as c_int
-}
+pub unsafe fn PyModule_CheckExact(op: *mut PyObject) -> c_int { unsafe {
+    (Py_TYPE(op) == &raw mut PyModule_Type) as c_int
+}}
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
 unsafe extern "C" {

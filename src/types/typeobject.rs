@@ -34,9 +34,9 @@ impl PyType {
     /// This increments the reference count on the type object.
     /// Undefined behavior if the pointer is NULL or invalid.
     #[inline]
-    pub unsafe fn from_type_ptr(py: Python, p: *mut ffi::PyTypeObject) -> &PyType {
+    pub unsafe fn from_type_ptr(py: Python, p: *mut ffi::PyTypeObject) -> &PyType { unsafe {
         py.from_borrowed_ptr::<PyType>(p as *mut ffi::PyObject)
-    }
+    }}
 
     /// Gets the name of the PyType.
     pub fn name(&self) -> Cow<str> {

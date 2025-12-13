@@ -90,14 +90,14 @@ where
         ) -> c_int
         where
             T: for<'p> PyBufferGetBufferProtocol<'p>,
-        {
+        { unsafe {
             let _pool = crate::GILPool::new();
             let py = crate::Python::assume_gil_acquired();
             let slf = py.mut_from_borrowed_ptr::<T>(slf);
 
             let result = slf.bf_getbuffer(arg1, arg2).into();
             crate::callback::cb_convert(UnitCallbackConverter, py, result)
-        }
+        }}
         Some(wrap::<T>)
     }
 }

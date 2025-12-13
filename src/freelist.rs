@@ -72,7 +72,7 @@ impl<T> PyObjectAlloc<T> for T
 where
     T: PyObjectWithFreeList,
 {
-    unsafe fn alloc(_py: Python) -> PyResult<*mut ffi::PyObject> {
+    unsafe fn alloc(_py: Python) -> PyResult<*mut ffi::PyObject> { unsafe {
         let obj = if let Some(obj) = <T as PyObjectWithFreeList>::get_free_list().pop() {
             ffi::PyObject_Init(obj, <T as PyTypeInfo>::type_object());
             obj
@@ -81,7 +81,7 @@ where
         };
 
         Ok(obj)
-    }
+    }}
 
     #[cfg(Py_3)]
     unsafe fn dealloc(py: Python, obj: *mut ffi::PyObject) {
@@ -113,7 +113,7 @@ where
     }
 
     #[cfg(not(Py_3))]
-    unsafe fn dealloc(py: Python, obj: *mut ffi::PyObject) {
+    unsafe fn dealloc(py: Python, obj: *mut ffi::PyObject) { unsafe {
         pytype_drop::<T>(py, obj);
 
         if let Some(obj) = <T as PyObjectWithFreeList>::get_free_list().insert(obj) {
@@ -135,5 +135,5 @@ where
                 }
             }
         }
-    }
+    }}
 }

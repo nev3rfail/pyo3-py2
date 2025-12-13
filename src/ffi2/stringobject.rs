@@ -24,33 +24,33 @@ unsafe extern "C" {
 }
 
 #[inline]
-pub unsafe fn PyString_Check(op: *mut PyObject) -> c_int {
+pub unsafe fn PyString_Check(op: *mut PyObject) -> c_int { unsafe {
     PyType_FastSubclass(Py_TYPE(op), Py_TPFLAGS_STRING_SUBCLASS)
-}
+}}
 
 #[inline]
-pub unsafe fn PyBaseString_Check(op: *mut PyObject) -> c_int {
+pub unsafe fn PyBaseString_Check(op: *mut PyObject) -> c_int { unsafe {
     PyType_FastSubclass(
         Py_TYPE(op),
         Py_TPFLAGS_STRING_SUBCLASS | Py_TPFLAGS_UNICODE_SUBCLASS,
     )
-}
+}}
 
 #[inline]
-pub unsafe fn PyString_CheckExact(op: *mut PyObject) -> c_int {
-    let u: *mut PyTypeObject = &mut PyString_Type;
+pub unsafe fn PyString_CheckExact(op: *mut PyObject) -> c_int { unsafe {
+    let u: *mut PyTypeObject = &raw mut PyString_Type;
     (Py_TYPE(op) == u) as c_int
-}
+}}
 
 #[inline]
-pub unsafe fn PyString_GET_SIZE(op: *mut PyObject) -> Py_ssize_t {
+pub unsafe fn PyString_GET_SIZE(op: *mut PyObject) -> Py_ssize_t { unsafe {
     (*(op as *mut PyStringObject)).ob_size
-}
+}}
 
 #[inline]
-pub unsafe fn PyString_AS_STRING(op: *mut PyObject) -> *mut c_char {
+pub unsafe fn PyString_AS_STRING(op: *mut PyObject) -> *mut c_char { unsafe {
     (*(op as *mut PyStringObject)).ob_sval.as_mut_ptr()
-}
+}}
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
 unsafe extern "C" {

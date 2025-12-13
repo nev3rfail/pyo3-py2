@@ -32,13 +32,13 @@ impl PyObject {
     /// This moves ownership over the pointer into the `PyObject`.
     /// Undefined behavior if the pointer is NULL or invalid.
     #[inline]
-    pub unsafe fn from_owned_ptr(_py: Python, ptr: *mut ffi::PyObject) -> PyObject {
+    pub unsafe fn from_owned_ptr(_py: Python, ptr: *mut ffi::PyObject) -> PyObject { unsafe {
         debug_assert!(
             !ptr.is_null() && ffi::Py_REFCNT(ptr) > 0,
             "REFCNT: {:?} - {:?}", ptr, ffi::Py_REFCNT(ptr)
         );
         PyObject(NonNull::new_unchecked(ptr))
-    }
+    }}
 
     /// Creates a `PyObject` instance for the given FFI pointer.
     /// Panics if the pointer is `null`.
@@ -77,14 +77,14 @@ impl PyObject {
     /// Calls Py_INCREF() on the ptr.
     /// Undefined behavior if the pointer is NULL or invalid.
     #[inline]
-    pub unsafe fn from_borrowed_ptr(_py: Python, ptr: *mut ffi::PyObject) -> PyObject {
+    pub unsafe fn from_borrowed_ptr(_py: Python, ptr: *mut ffi::PyObject) -> PyObject { unsafe {
         debug_assert!(
             !ptr.is_null() && ffi::Py_REFCNT(ptr) > 0,
             "REFCNT: {:?} - {:?}", ptr, ffi::Py_REFCNT(ptr)
         );
         ffi::Py_INCREF(ptr);
         PyObject(NonNull::new_unchecked(ptr))
-    }
+    }}
 
     /// Creates a `PyObject` instance for the given Python FFI pointer.
     /// Calls Py_INCREF() on the ptr.
@@ -92,13 +92,13 @@ impl PyObject {
     pub unsafe fn from_borrowed_ptr_or_err(
         py: Python,
         ptr: *mut ffi::PyObject,
-    ) -> PyResult<PyObject> {
+    ) -> PyResult<PyObject> { unsafe {
         if ptr.is_null() {
             Err(PyErr::fetch(py))
         } else {
             Ok(PyObject::from_borrowed_ptr(py, ptr))
         }
-    }
+    }}
 
     /// Creates a `PyObject` instance for the given Python FFI pointer.
     /// Calls Py_INCREF() on the ptr.
@@ -106,13 +106,13 @@ impl PyObject {
     pub unsafe fn from_borrowed_ptr_or_opt(
         py: Python,
         ptr: *mut ffi::PyObject,
-    ) -> Option<PyObject> {
+    ) -> Option<PyObject> { unsafe {
         if ptr.is_null() {
             None
         } else {
             Some(PyObject::from_borrowed_ptr(py, ptr))
         }
-    }
+    }}
 
     /// Gets the reference count of the ffi::PyObject pointer.
     pub fn get_refcnt(&self) -> isize {

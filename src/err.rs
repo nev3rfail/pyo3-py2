@@ -285,7 +285,7 @@ impl PyErr {
         ptype: *mut ffi::PyObject,
         pvalue: *mut ffi::PyObject,
         ptraceback: *mut ffi::PyObject,
-    ) -> PyErr {
+    ) -> PyErr { unsafe {
         // Note: must not panic to ensure all owned pointers get acquired correctly,
         // and because we mustn't panic in normalize().
 
@@ -308,7 +308,7 @@ impl PyErr {
             pvalue,
             ptraceback: PyObject::from_owned_ptr_or_opt(Python::assume_gil_acquired(), ptraceback),
         }
-    }
+    }}
 
     /// Print a standard traceback to sys.stderr.
     pub fn print(self, py: Python) {

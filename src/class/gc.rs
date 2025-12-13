@@ -96,7 +96,7 @@ where
         ) -> c_int
         where
             T: for<'p> PyGCTraverseProtocol<'p>,
-        {
+        { unsafe {
             let _pool = crate::GILPool::new();
             let py = Python::assume_gil_acquired();
             let slf = py.mut_from_borrowed_ptr::<T>(slf);
@@ -110,7 +110,7 @@ where
                 Ok(()) => 0,
                 Err(PyTraverseError(code)) => code,
             }
-        }
+        }}
 
         Some(tp_traverse::<T>)
     }
@@ -137,14 +137,14 @@ where
         unsafe extern "C" fn tp_clear<T>(slf: *mut ffi::PyObject) -> c_int
         where
             T: for<'p> PyGCClearProtocol<'p>,
-        {
+        { unsafe {
             let _pool = crate::GILPool::new();
             let py = Python::assume_gil_acquired();
             let slf = py.mut_from_borrowed_ptr::<T>(slf);
 
             slf.__clear__();
             0
-        }
+        }}
         Some(tp_clear::<T>)
     }
 }

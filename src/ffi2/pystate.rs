@@ -99,6 +99,6 @@ pub unsafe fn PyThreadState_GET() -> *mut PyThreadState {
 
 #[cfg(not(py_sys_config = "Py_DEBUG"))]
 #[inline]
-pub unsafe fn PyThreadState_GET() -> *mut PyThreadState {
+pub unsafe fn PyThreadState_GET() -> *mut PyThreadState { unsafe {
     _PyThreadState_Current
-}
+}}

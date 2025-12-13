@@ -7,9 +7,9 @@ unsafe extern "C" {
 }
 
 #[inline]
-pub unsafe fn PyCObject_Check(op: *mut PyObject) -> c_int {
-    (Py_TYPE(op) == &mut PyCObject_Type) as c_int
-}
+pub unsafe fn PyCObject_Check(op: *mut PyObject) -> c_int { unsafe {
+    (Py_TYPE(op) == &raw mut PyCObject_Type) as c_int
+}}
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
 unsafe extern "C" {

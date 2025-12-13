@@ -87,9 +87,9 @@ unsafe extern "C" {
 }
 
 #[inline]
-pub unsafe fn PyDescr_IsData(d: *mut PyObject) -> c_int {
+pub unsafe fn PyDescr_IsData(d: *mut PyObject) -> c_int { unsafe {
     (*Py_TYPE(d)).tp_descr_set.is_some() as c_int
-}
+}}
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
 unsafe extern "C" {

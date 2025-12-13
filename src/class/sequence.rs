@@ -245,7 +245,7 @@ where
         ) -> c_int
         where
             T: for<'p> PySequenceSetItemProtocol<'p>,
-        {
+        { unsafe {
             let _pool = crate::GILPool::new();
             let py = Python::assume_gil_acquired();
             let slf = py.mut_from_borrowed_ptr::<T>(slf);
@@ -269,7 +269,7 @@ where
                     -1
                 }
             }
-        }
+        }}
         Some(wrap::<T>)
     }
 }
@@ -323,7 +323,7 @@ mod sq_ass_item_impl {
             ) -> c_int
             where
                 T: for<'p> PySequenceDelItemProtocol<'p>,
-            {
+            { unsafe {
                 let _pool = crate::GILPool::new();
                 let py = Python::assume_gil_acquired();
                 let slf = py.mut_from_borrowed_ptr::<T>(slf);
@@ -344,7 +344,7 @@ mod sq_ass_item_impl {
                         -1
                     }
                 }
-            }
+            }}
             Some(wrap::<T>)
         }
     }
@@ -373,7 +373,7 @@ mod sq_ass_item_impl {
             ) -> c_int
             where
                 T: for<'p> PySequenceSetItemProtocol<'p> + for<'p> PySequenceDelItemProtocol<'p>,
-            {
+            { unsafe {
                 let _pool = crate::GILPool::new();
                 let py = Python::assume_gil_acquired();
                 let slf = py.mut_from_borrowed_ptr::<T>(slf);
@@ -394,7 +394,7 @@ mod sq_ass_item_impl {
                         -1
                     }
                 }
-            }
+            }}
             Some(wrap::<T>)
         }
     }

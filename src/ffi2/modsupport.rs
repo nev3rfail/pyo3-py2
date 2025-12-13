@@ -90,9 +90,9 @@ pub unsafe fn Py_InitModule4(
     doc: *const c_char,
     _self: *mut PyObject,
     apiver: c_int,
-) -> *mut PyObject {
+) -> *mut PyObject { unsafe {
     Py_InitModule4_64(name, methods, doc, _self, apiver)
-}
+}}
 
 #[cfg(all(target_pointer_width = "64", py_sys_config = "Py_TRACE_REFS"))]
 #[inline]
@@ -119,7 +119,7 @@ pub unsafe fn Py_InitModule4(
 }
 
 #[inline]
-pub unsafe fn Py_InitModule(name: *const c_char, methods: *mut PyMethodDef) -> *mut PyObject {
+pub unsafe fn Py_InitModule(name: *const c_char, methods: *mut PyMethodDef) -> *mut PyObject { unsafe {
     Py_InitModule4(
         name,
         methods,
@@ -127,13 +127,13 @@ pub unsafe fn Py_InitModule(name: *const c_char, methods: *mut PyMethodDef) -> *
         ptr::null_mut(),
         PYTHON_API_VERSION,
     )
-}
+}}
 
 #[inline]
 pub unsafe fn Py_InitModule3(
     name: *const c_char,
     methods: *mut PyMethodDef,
     doc: *const c_char,
-) -> *mut PyObject {
+) -> *mut PyObject { unsafe {
     Py_InitModule4(name, methods, doc, ptr::null_mut(), PYTHON_API_VERSION)
-}
+}}

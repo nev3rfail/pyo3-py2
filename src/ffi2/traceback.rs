@@ -27,6 +27,6 @@ unsafe extern "C" {
 }
 
 #[inline]
-pub unsafe fn PyTraceBack_Check(op: *mut PyObject) -> c_int {
-    (Py_TYPE(op) == &mut PyTraceBack_Type) as c_int
-}
+pub unsafe fn PyTraceBack_Check(op: *mut PyObject) -> c_int { unsafe {
+    (Py_TYPE(op) == &raw mut PyTraceBack_Type) as c_int
+}}

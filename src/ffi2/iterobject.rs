@@ -11,11 +11,11 @@ unsafe extern "C" {
 }
 
 #[inline]
-pub unsafe fn PySeqIter_Check(op: *mut PyObject) -> c_int {
-    (Py_TYPE(op) == &mut PySeqIter_Type) as c_int
-}
+pub unsafe fn PySeqIter_Check(op: *mut PyObject) -> c_int { unsafe {
+    (Py_TYPE(op) == &raw mut PySeqIter_Type) as c_int
+}}
 
 #[inline]
-pub unsafe fn PyCallIter_Check(op: *mut PyObject) -> c_int {
-    (Py_TYPE(op) == &mut PyCallIter_Type) as c_int
-}
+pub unsafe fn PyCallIter_Check(op: *mut PyObject) -> c_int { unsafe {
+    (Py_TYPE(op) == &raw mut PyCallIter_Type) as c_int
+}}

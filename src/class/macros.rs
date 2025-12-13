@@ -16,13 +16,13 @@ macro_rules! py_unary_func {
         unsafe extern "C" fn wrap<T>(slf: *mut $crate::ffi::PyObject) -> $ret_type
         where
             T: for<'p> $trait<'p>,
-        {
+        { unsafe {
             let _pool = $crate::GILPool::new();
             let py = $crate::Python::assume_gil_acquired();
             let slf = py.mut_from_borrowed_ptr::<T>(slf);
             let res = slf.$f().into();
             $crate::callback::cb_convert($conv, py, res)
-        }
+        }}
         Some(wrap::<$class>)
     }};
 }
@@ -53,14 +53,14 @@ macro_rules! py_len_func {
         unsafe extern "C" fn wrap<T>(slf: *mut $crate::ffi::PyObject) -> $crate::ffi::Py_ssize_t
         where
             T: for<'p> $trait<'p>,
-        {
+        { unsafe {
             let _pool = $crate::GILPool::new();
             let py = Python::assume_gil_acquired();
             let slf = py.mut_from_borrowed_ptr::<T>(slf);
 
             let result = slf.$f().into();
             $crate::callback::cb_convert($conv, py, result)
-        }
+        }}
         Some(wrap::<$class>)
     }};
 }
@@ -82,7 +82,7 @@ macro_rules! py_binary_func {
         unsafe extern "C" fn wrap<T>(slf: *mut ffi::PyObject, arg: *mut ffi::PyObject) -> $return
         where
             T: for<'p> $trait<'p>,
-        {
+        { unsafe {
             use $crate::ObjectProtocol;
             let _pool = $crate::GILPool::new();
             let py = $crate::Python::assume_gil_acquired();
@@ -94,7 +94,7 @@ macro_rules! py_binary_func {
                 Err(e) => Err(e.into()),
             };
             $crate::callback::cb_convert($conv, py, result)
-        }
+        }}
         Some(wrap::<$class>)
     }};
 }
@@ -110,7 +110,7 @@ macro_rules! py_binary_num_func {
         ) -> *mut $crate::ffi::PyObject
         where
             T: for<'p> $trait<'p>,
-        {
+        { unsafe {
             use $crate::ObjectProtocol;
             let _pool = $crate::GILPool::new();
             let py = $crate::Python::assume_gil_acquired();
@@ -125,7 +125,7 @@ macro_rules! py_binary_num_func {
                 Err(e) => Err(e.into()),
             };
             $crate::callback::cb_convert($conv, py, result)
-        }
+        }}
         Some(wrap::<$class>)
     }};
 }
@@ -141,7 +141,7 @@ macro_rules! py_binary_self_func {
         ) -> *mut $crate::ffi::PyObject
         where
             T: for<'p> $trait<'p>,
-        {
+        { unsafe {
             use $crate::ObjectProtocol;
 
             let _pool = $crate::GILPool::new();
@@ -163,7 +163,7 @@ macro_rules! py_binary_self_func {
                     $crate::std::ptr::null_mut()
                 }
             }
-        }
+        }}
         Some(wrap::<$class>)
     }};
 }
@@ -179,13 +179,13 @@ macro_rules! py_ssizearg_func {
         ) -> *mut $crate::ffi::PyObject
         where
             T: for<'p> $trait<'p>,
-        {
+        { unsafe {
             let _pool = $crate::GILPool::new();
             let py = $crate::Python::assume_gil_acquired();
             let slf = py.mut_from_borrowed_ptr::<T>(slf);
             let result = slf.$f(arg as isize).into();
             $crate::callback::cb_convert($conv, py, result)
-        }
+        }}
         Some(wrap::<$class>)
     }};
 }
@@ -210,7 +210,7 @@ macro_rules! py_ternary_func {
         ) -> $return_type
         where
             T: for<'p> $trait<'p>,
-        {
+        { unsafe {
             use $crate::ObjectProtocol;
 
             let _pool = $crate::GILPool::new();
@@ -227,7 +227,7 @@ macro_rules! py_ternary_func {
                 Err(e) => Err(e.into()),
             };
             $crate::callback::cb_convert($conv, py, result)
-        }
+        }}
 
         Some(wrap::<T>)
     }};
@@ -244,7 +244,7 @@ macro_rules! py_ternary_num_func {
         ) -> *mut $crate::ffi::PyObject
         where
             T: for<'p> $trait<'p>,
-        {
+        { unsafe {
             use $crate::ObjectProtocol;
 
             let _pool = $crate::GILPool::new();
@@ -264,7 +264,7 @@ macro_rules! py_ternary_num_func {
                 Err(e) => Err(e.into()),
             };
             $crate::callback::cb_convert($conv, py, result)
-        }
+        }}
 
         Some(wrap::<T>)
     }};
@@ -281,7 +281,7 @@ macro_rules! py_ternary_self_func {
         ) -> *mut $crate::ffi::PyObject
         where
             T: for<'p> $trait<'p>,
-        {
+        { unsafe {
             use $crate::ObjectProtocol;
 
             let _pool = $crate::GILPool::new();
@@ -305,7 +305,7 @@ macro_rules! py_ternary_self_func {
                     $crate::std::ptr::null_mut()
                 }
             }
-        }
+        }}
         Some(wrap::<T>)
     }};
 }
@@ -320,7 +320,7 @@ macro_rules! py_func_set {
         ) -> $crate::libc::c_int
         where
             T: for<'p> $trait_name<'p>,
-        {
+        { unsafe {
             use $crate::ObjectProtocol;
 
             let _pool = $crate::GILPool::new();
@@ -352,7 +352,7 @@ macro_rules! py_func_set {
                     -1
                 }
             }
-        }
+        }}
 
         Some(wrap::<$generic>)
     }};
@@ -368,7 +368,7 @@ macro_rules! py_func_del {
         ) -> $crate::libc::c_int
         where
             U: for<'p> $trait_name<'p>,
-        {
+        { unsafe {
             use $crate::ObjectProtocol;
 
             let _pool = $crate::GILPool::new();
@@ -394,7 +394,7 @@ macro_rules! py_func_del {
                     -1
                 }
             }
-        }
+        }}
 
         Some(wrap::<$generic>)
     }};
@@ -410,7 +410,7 @@ macro_rules! py_func_set_del {
         ) -> $crate::libc::c_int
         where
             T: for<'p> $trait1<'p> + for<'p> $trait2<'p>,
-        {
+        { unsafe {
             use $crate::ObjectProtocol;
 
             let _pool = $crate::GILPool::new();
@@ -440,7 +440,7 @@ macro_rules! py_func_set_del {
                     -1
                 }
             }
-        }
+        }}
         Some(wrap::<$generic>)
     }};
 }

@@ -89,11 +89,11 @@ unsafe extern "C" {
 }
 
 #[inline]
-pub unsafe fn PyCode_Check(op: *mut PyObject) -> c_int {
-    (Py_TYPE(op) == &mut PyCode_Type) as c_int
-}
+pub unsafe fn PyCode_Check(op: *mut PyObject) -> c_int { unsafe {
+    (Py_TYPE(op) == &raw mut PyCode_Type) as c_int
+}}
 
 #[inline]
-pub unsafe fn PyCode_GetNumFree(op: *mut PyCodeObject) -> Py_ssize_t {
+pub unsafe fn PyCode_GetNumFree(op: *mut PyCodeObject) -> Py_ssize_t { unsafe {
     crate::ffi2::tupleobject::PyTuple_GET_SIZE((*op).co_freevars)
-}
+}}

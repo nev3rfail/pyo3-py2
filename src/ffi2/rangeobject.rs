@@ -7,7 +7,7 @@ unsafe extern "C" {
 }
 
 #[inline]
-pub unsafe fn PyRange_Check(op: *mut PyObject) -> c_int {
-    let u: *mut PyTypeObject = &mut PyRange_Type;
+pub unsafe fn PyRange_Check(op: *mut PyObject) -> c_int { unsafe {
+    let u: *mut PyTypeObject = &raw mut PyRange_Type;
     (Py_TYPE(op) == u) as c_int
-}
+}}

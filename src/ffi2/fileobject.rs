@@ -8,14 +8,14 @@ unsafe extern "C" {
 }
 
 #[inline]
-pub unsafe fn PyFile_Check(op: *mut PyObject) -> c_int {
-    PyObject_TypeCheck(op, &mut PyFile_Type)
-}
+pub unsafe fn PyFile_Check(op: *mut PyObject) -> c_int { unsafe {
+    PyObject_TypeCheck(op, &raw mut PyFile_Type)
+}}
 
 #[inline]
-pub unsafe fn PyFile_CheckExact(op: *mut PyObject) -> c_int {
-    (Py_TYPE(op) == &mut PyFile_Type) as c_int
-}
+pub unsafe fn PyFile_CheckExact(op: *mut PyObject) -> c_int { unsafe {
+    (Py_TYPE(op) == &raw mut PyFile_Type) as c_int
+}}
 
 pub const PY_STDIOTEXTMODE: &'static str = "b";
 

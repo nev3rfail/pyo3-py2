@@ -21,15 +21,15 @@ unsafe extern "C" {
 }
 
 #[inline]
-pub unsafe fn PyInt_Check(op: *mut PyObject) -> c_int {
+pub unsafe fn PyInt_Check(op: *mut PyObject) -> c_int { unsafe {
     PyType_FastSubclass(Py_TYPE(op), Py_TPFLAGS_INT_SUBCLASS)
-}
+}}
 
 #[inline]
-pub unsafe fn PyInt_CheckExact(op: *mut PyObject) -> c_int {
-    let u: *mut PyTypeObject = &mut PyInt_Type;
+pub unsafe fn PyInt_CheckExact(op: *mut PyObject) -> c_int { unsafe {
+    let u: *mut PyTypeObject = &raw mut PyInt_Type;
     (Py_TYPE(op) == u) as c_int
-}
+}}
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
 unsafe extern "C" {
@@ -65,6 +65,6 @@ unsafe extern "C" {
 // -> *mut PyObject;
 }
 
-pub unsafe fn PyInt_AS_LONG(io: *mut PyObject) -> c_long {
+pub unsafe fn PyInt_AS_LONG(io: *mut PyObject) -> c_long { unsafe {
     (*(io as *mut PyIntObject)).ob_ival
-}
+}}

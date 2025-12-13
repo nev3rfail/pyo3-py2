@@ -22,32 +22,32 @@ unsafe extern "C" {
 }
 
 #[inline]
-pub unsafe fn PyList_Check(op: *mut PyObject) -> c_int {
+pub unsafe fn PyList_Check(op: *mut PyObject) -> c_int { unsafe {
     PyType_FastSubclass(Py_TYPE(op), Py_TPFLAGS_LIST_SUBCLASS)
-}
+}}
 
 #[inline]
-pub unsafe fn PyList_CheckExact(op: *mut PyObject) -> c_int {
-    let u: *mut PyTypeObject = &mut PyList_Type;
+pub unsafe fn PyList_CheckExact(op: *mut PyObject) -> c_int { unsafe {
+    let u: *mut PyTypeObject = &raw mut PyList_Type;
     (Py_TYPE(op) == u) as c_int
-}
+}}
 
 // Macro, trading safety for speed
 #[inline]
-pub unsafe fn PyList_GET_ITEM(op: *mut PyObject, i: Py_ssize_t) -> *mut PyObject {
+pub unsafe fn PyList_GET_ITEM(op: *mut PyObject, i: Py_ssize_t) -> *mut PyObject { unsafe {
     *(*(op as *mut PyListObject)).ob_item.offset(i as isize)
-}
+}}
 
 #[inline]
-pub unsafe fn PyList_GET_SIZE(op: *mut PyObject) -> Py_ssize_t {
+pub unsafe fn PyList_GET_SIZE(op: *mut PyObject) -> Py_ssize_t { unsafe {
     Py_SIZE(op)
-}
+}}
 
 /// Macro, *only* to be used to fill in brand new lists
 #[inline]
-pub unsafe fn PyList_SET_ITEM(op: *mut PyObject, i: Py_ssize_t, v: *mut PyObject) {
+pub unsafe fn PyList_SET_ITEM(op: *mut PyObject, i: Py_ssize_t, v: *mut PyObject) { unsafe {
     *(*(op as *mut PyListObject)).ob_item.offset(i as isize) = v;
-}
+}}
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
 unsafe extern "C" {

@@ -116,9 +116,9 @@ macro_rules! pyobject_native_type_convert(
             const OFFSET: isize = 0;
 
             #[inline]
-            unsafe fn type_object() -> &'static mut $crate::ffi::PyTypeObject {
+            unsafe fn type_object() -> &'static mut $crate::ffi::PyTypeObject { unsafe {
                 &mut $typeobject
-            }
+            }}
 
             fn is_instance(ptr: &$crate::types::PyObjectRef) -> bool {
                 #[allow(unused_unsafe)]

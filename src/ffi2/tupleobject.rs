@@ -21,38 +21,38 @@ unsafe extern "C" {
 }
 
 #[inline]
-pub unsafe fn PyTuple_Check(op: *mut PyObject) -> c_int {
+pub unsafe fn PyTuple_Check(op: *mut PyObject) -> c_int { unsafe {
     PyType_FastSubclass(Py_TYPE(op), Py_TPFLAGS_TUPLE_SUBCLASS)
-}
+}}
 
 #[inline]
-pub unsafe fn PyTuple_CheckExact(op: *mut PyObject) -> c_int {
-    let u: *mut PyTypeObject = &mut PyTuple_Type;
+pub unsafe fn PyTuple_CheckExact(op: *mut PyObject) -> c_int { unsafe {
+    let u: *mut PyTypeObject = &raw mut PyTuple_Type;
     (Py_TYPE(op) == u) as c_int
-}
+}}
 
 // Macro, trading safety for speed
 #[inline]
-pub unsafe fn PyTuple_GET_ITEM(op: *mut PyObject, i: Py_ssize_t) -> *mut PyObject {
+pub unsafe fn PyTuple_GET_ITEM(op: *mut PyObject, i: Py_ssize_t) -> *mut PyObject { unsafe {
     *(*(op as *mut PyTupleObject))
         .ob_item
         .as_ptr()
         .offset(i as isize)
-}
+}}
 
 #[inline]
-pub unsafe fn PyTuple_GET_SIZE(op: *mut PyObject) -> Py_ssize_t {
+pub unsafe fn PyTuple_GET_SIZE(op: *mut PyObject) -> Py_ssize_t { unsafe {
     Py_SIZE(op)
-}
+}}
 
 /// Macro, *only* to be used to fill in brand new tuples
 #[inline]
-pub unsafe fn PyTuple_SET_ITEM(op: *mut PyObject, i: Py_ssize_t, v: *mut PyObject) {
+pub unsafe fn PyTuple_SET_ITEM(op: *mut PyObject, i: Py_ssize_t, v: *mut PyObject) { unsafe {
     *(*(op as *mut PyTupleObject))
         .ob_item
         .as_mut_ptr()
         .offset(i as isize) = v;
-}
+}}
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
 unsafe extern "C" {

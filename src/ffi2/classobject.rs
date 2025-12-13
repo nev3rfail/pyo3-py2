@@ -57,22 +57,22 @@ unsafe extern "C" {
 }
 
 #[inline]
-pub unsafe fn PyClass_Check(op: *mut PyObject) -> c_int {
-    let u: *mut PyTypeObject = &mut PyClass_Type;
+pub unsafe fn PyClass_Check(op: *mut PyObject) -> c_int { unsafe {
+    let u: *mut PyTypeObject = &raw mut PyClass_Type;
     (Py_TYPE(op) == u) as c_int
-}
+}}
 
 #[inline]
-pub unsafe fn PyInstance_Check(op: *mut PyObject) -> c_int {
-    let u: *mut PyTypeObject = &mut PyInstance_Type;
+pub unsafe fn PyInstance_Check(op: *mut PyObject) -> c_int { unsafe {
+    let u: *mut PyTypeObject = &raw mut PyInstance_Type;
     (Py_TYPE(op) == u) as c_int
-}
+}}
 
 #[inline]
-pub unsafe fn PyMethod_Check(op: *mut PyObject) -> c_int {
-    let u: *mut PyTypeObject = &mut PyMethod_Type;
+pub unsafe fn PyMethod_Check(op: *mut PyObject) -> c_int { unsafe {
+    let u: *mut PyTypeObject = &raw mut PyMethod_Type;
     (Py_TYPE(op) == u) as c_int
-}
+}}
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
 unsafe extern "C" {
@@ -101,16 +101,16 @@ unsafe extern "C" {
 }
 
 #[inline]
-pub unsafe fn PyMethod_GET_FUNCTION(meth: *mut PyObject) -> *mut PyObject {
+pub unsafe fn PyMethod_GET_FUNCTION(meth: *mut PyObject) -> *mut PyObject { unsafe {
     (*(meth as *mut PyMethodObject)).im_func
-}
+}}
 
 #[inline]
-pub unsafe fn PyMethod_GET_SELF(meth: *mut PyObject) -> *mut PyObject {
+pub unsafe fn PyMethod_GET_SELF(meth: *mut PyObject) -> *mut PyObject { unsafe {
     (*(meth as *mut PyMethodObject)).im_self
-}
+}}
 
 #[inline]
-pub unsafe fn PyMethod_GET_CLASS(meth: *mut PyObject) -> *mut PyObject {
+pub unsafe fn PyMethod_GET_CLASS(meth: *mut PyObject) -> *mut PyObject { unsafe {
     (*(meth as *mut PyMethodObject)).im_class
-}
+}}

@@ -23,14 +23,14 @@ unsafe extern "C" {
     pub static mut PyByteArrayIter_Type: PyTypeObject;
 }
 
-pub unsafe fn PyByteArray_Check(op: *mut PyObject) -> c_int {
-    PyObject_TypeCheck(op, &mut PyByteArray_Type)
-}
+pub unsafe fn PyByteArray_Check(op: *mut PyObject) -> c_int { unsafe {
+    PyObject_TypeCheck(op, &raw mut PyByteArray_Type)
+}}
 
-pub unsafe fn PyByteArray_CheckExact(op: *mut PyObject) -> c_int {
-    let u: *mut PyTypeObject = &mut PyByteArray_Type;
+pub unsafe fn PyByteArray_CheckExact(op: *mut PyObject) -> c_int { unsafe {
+    let u: *mut PyTypeObject = &raw mut PyByteArray_Type;
     (Py_TYPE(op) == u) as c_int
-}
+}}
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
 unsafe extern "C" {
@@ -43,15 +43,15 @@ unsafe extern "C" {
 }
 
 #[inline]
-pub unsafe fn PyByteArray_AS_STRING(o: *mut PyObject) -> *mut c_char {
+pub unsafe fn PyByteArray_AS_STRING(o: *mut PyObject) -> *mut c_char { unsafe {
     PyByteArray_AsString(o)
     // #define PyByteArray_AS_STRING(self) \
     //   (assert(PyByteArray_Check(self)), \
     //    Py_SIZE(self) ? ((PyByteArrayObject *)(self))->ob_bytes : _PyByteArray_empty_string)
-}
+}}
 
 #[inline]
-pub unsafe fn PyByteArray_GET_SIZE(o: *mut PyObject) -> Py_ssize_t {
+pub unsafe fn PyByteArray_GET_SIZE(o: *mut PyObject) -> Py_ssize_t { unsafe {
     // #define PyByteArray_GET_SIZE(self)  (assert(PyByteArray_Check(self)),Py_SIZE(self))
     PyByteArray_Size(o)
-}
+}}

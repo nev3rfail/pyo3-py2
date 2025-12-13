@@ -107,7 +107,7 @@ impl PyRawObject {
         py: Python,
         tp_ptr: *mut ffi::PyTypeObject,
         curr_ptr: *mut ffi::PyTypeObject,
-    ) -> PyResult<PyRawObject> {
+    ) -> PyResult<PyRawObject> { unsafe {
         let alloc = (*curr_ptr).tp_alloc.unwrap_or(ffi::PyType_GenericAlloc);
         let ptr = alloc(curr_ptr, 0);
 
@@ -121,7 +121,7 @@ impl PyRawObject {
         } else {
             PyErr::fetch(py).into()
         }
-    }
+    }}
 
     #[must_use]
     pub unsafe fn new_with_ptr(
@@ -187,13 +187,13 @@ impl PyObjectWithToken for PyRawObject {
     }
 }
 
-pub(crate) unsafe fn pytype_drop<T: PyTypeInfo>(py: Python, obj: *mut ffi::PyObject) {
+pub(crate) unsafe fn pytype_drop<T: PyTypeInfo>(py: Python, obj: *mut ffi::PyObject) { unsafe {
     if T::OFFSET != 0 {
         let ptr = (obj as *mut u8).offset(T::OFFSET) as *mut T;
         std::ptr::drop_in_place(ptr);
         pytype_drop::<T::BaseType>(py, obj);
     }
-}
+}}
 
 /// A Python object allocator that is usable as a base type for `#[pyclass]`
 pub trait PyObjectAlloc<T> {
@@ -215,11 +215,11 @@ where
 {
     #[allow(unconditional_recursion)]
     /// Calls the rust destructor for the object.
-    default unsafe fn drop(py: Python, obj: *mut ffi::PyObject) {
+    default unsafe fn drop(py: Python, obj: *mut ffi::PyObject) { unsafe {
         pytype_drop::<T>(py, obj);
-    }
+    }}
 
-    default unsafe fn alloc(_py: Python) -> PyResult<*mut ffi::PyObject> {
+    default unsafe fn alloc(_py: Python) -> PyResult<*mut ffi::PyObject> { unsafe {
         // TODO: remove this
         <T as PyTypeCreate>::init_type();
 
@@ -228,9 +228,9 @@ where
         let obj = alloc(tp_ptr, 0);
 
         Ok(obj)
-    }
+    }}
 
-    default unsafe fn dealloc(py: Python, obj: *mut ffi::PyObject) {
+    default unsafe fn dealloc(py: Python, obj: *mut ffi::PyObject) { unsafe {
         Self::drop(py, obj);
 
         #[cfg(Py_3)]
@@ -257,7 +257,7 @@ where
                 }
             }
         }
-    }
+    }}
 }
 
 /// Python object types that have a corresponding type object.
@@ -505,11 +505,11 @@ fn async_methods<T>(_type_info: &mut ffi::PyTypeObject) {}
 unsafe extern "C" fn tp_dealloc_callback<T>(obj: *mut ffi::PyObject)
 where
     T: PyObjectAlloc<T>,
-{
+{ unsafe {
     let _pool = pythonrun::GILPool::new_no_pointers();
     let py = Python::assume_gil_acquired();
     <T as PyObjectAlloc<T>>::dealloc(py, obj)
-}
+}}
 
 #[cfg(Py_3)]
 fn py_class_flags<T: PyTypeInfo>(type_object: &mut ffi::PyTypeObject) {

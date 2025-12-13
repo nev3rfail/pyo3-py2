@@ -52,11 +52,11 @@ unsafe fn complex_operation(
     l: &PyComplex,
     r: &PyComplex,
     operation: unsafe extern "C" fn(ffi::Py_complex, ffi::Py_complex) -> ffi::Py_complex,
-) -> *mut ffi::PyObject {
+) -> *mut ffi::PyObject { unsafe {
     let l_val = (*(l.as_ptr() as *mut ffi::PyComplexObject)).cval;
     let r_val = (*(r.as_ptr() as *mut ffi::PyComplexObject)).cval;
     ffi::PyComplex_FromCComplex(operation(l_val, r_val))
-}
+}}
 
 #[cfg(any(not(Py_LIMITED_API), not(Py_3)))]
 impl<'py> Add for &'py PyComplex {

@@ -5,14 +5,14 @@ use std::os::raw::{c_char, c_int, c_void};
 use std::ptr;
 
 #[inline]
-pub unsafe fn PyObject_DelAttrString(o: *mut PyObject, attr_name: *const c_char) -> c_int {
+pub unsafe fn PyObject_DelAttrString(o: *mut PyObject, attr_name: *const c_char) -> c_int { unsafe {
     PyObject_SetAttrString(o, attr_name, ptr::null_mut())
-}
+}}
 
 #[inline]
-pub unsafe fn PyObject_DelAttr(o: *mut PyObject, attr_name: *mut PyObject) -> c_int {
+pub unsafe fn PyObject_DelAttr(o: *mut PyObject, attr_name: *mut PyObject) -> c_int { unsafe {
     PyObject_SetAttr(o, attr_name, ptr::null_mut())
-}
+}}
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
 unsafe extern "C" {
@@ -205,52 +205,52 @@ unsafe extern "C" {
 }
 
 #[inline]
-pub unsafe fn PyObject_CheckBuffer(obj: *mut PyObject) -> c_int {
+pub unsafe fn PyObject_CheckBuffer(obj: *mut PyObject) -> c_int { unsafe {
     let t = (*obj).ob_type;
     let b = (*t).tp_as_buffer;
     (!b.is_null()
         && (PyType_HasFeature(t, Py_TPFLAGS_HAVE_NEWBUFFER) != 0)
         && ((*b).bf_getbuffer.is_some())) as c_int
-}
+}}
 
 #[inline]
-pub unsafe fn PyIter_Check(obj: *mut PyObject) -> c_int {
+pub unsafe fn PyIter_Check(obj: *mut PyObject) -> c_int { unsafe {
     let t = (*obj).ob_type;
     (PyType_HasFeature(t, Py_TPFLAGS_HAVE_ITER) != 0
         && match (*t).tp_iternext {
             None => false,
             Some(f) => f as *const c_void != _PyObject_NextNotImplemented as *const c_void,
         }) as c_int
-}
+}}
 
 #[inline]
-pub unsafe fn PyIndex_Check(obj: *mut PyObject) -> c_int {
+pub unsafe fn PyIndex_Check(obj: *mut PyObject) -> c_int { unsafe {
     let t = (*obj).ob_type;
     let n = (*t).tp_as_number;
     (!n.is_null() && PyType_HasFeature(t, Py_TPFLAGS_HAVE_INDEX) != 0 && (*n).nb_index.is_some())
         as c_int
-}
+}}
 
 #[inline]
-pub unsafe fn PySequence_Fast_GET_SIZE(o: *mut PyObject) -> Py_ssize_t {
+pub unsafe fn PySequence_Fast_GET_SIZE(o: *mut PyObject) -> Py_ssize_t { unsafe {
     if ffi2::listobject::PyList_Check(o) != 0 {
         ffi2::listobject::PyList_GET_SIZE(o)
     } else {
         ffi2::tupleobject::PyTuple_GET_SIZE(o)
     }
-}
+}}
 
 #[inline]
-pub unsafe fn PySequence_Fast_GET_ITEM(o: *mut PyObject, i: Py_ssize_t) -> *mut PyObject {
+pub unsafe fn PySequence_Fast_GET_ITEM(o: *mut PyObject, i: Py_ssize_t) -> *mut PyObject { unsafe {
     if ffi2::listobject::PyList_Check(o) != 0 {
         ffi2::listobject::PyList_GET_ITEM(o, i)
     } else {
         ffi2::tupleobject::PyTuple_GET_ITEM(o, i)
     }
-}
+}}
 
 #[inline]
-pub unsafe fn PySequence_Fast_ITEMS(o: *mut PyObject) -> *mut *mut PyObject {
+pub unsafe fn PySequence_Fast_ITEMS(o: *mut PyObject) -> *mut *mut PyObject { unsafe {
     if ffi2::listobject::PyList_Check(o) != 0 {
         (*(o as *mut ffi2::listobject::PyListObject)).ob_item
     } else {
@@ -258,40 +258,40 @@ pub unsafe fn PySequence_Fast_ITEMS(o: *mut PyObject) -> *mut *mut PyObject {
             .ob_item
             .as_mut_ptr()
     }
-}
+}}
 
 #[inline]
-pub unsafe fn PySequence_ITEM(o: *mut PyObject, i: Py_ssize_t) -> *mut PyObject {
+pub unsafe fn PySequence_ITEM(o: *mut PyObject, i: Py_ssize_t) -> *mut PyObject { unsafe {
     (*(*Py_TYPE(o)).tp_as_sequence)
         .sq_item
         .expect("Failed to get sq_item")(o, i)
-}
+}}
 
 pub const PY_ITERSEARCH_COUNT: c_int = 1;
 pub const PY_ITERSEARCH_INDEX: c_int = 2;
 pub const PY_ITERSEARCH_CONTAINS: c_int = 3;
 
 #[inline]
-pub unsafe fn PyMapping_DelItemString(o: *mut PyObject, key: *mut c_char) -> c_int {
+pub unsafe fn PyMapping_DelItemString(o: *mut PyObject, key: *mut c_char) -> c_int { unsafe {
     PyObject_DelItemString(o, key)
-}
+}}
 
 #[inline]
-pub unsafe fn PyMapping_DelItem(o: *mut PyObject, key: *mut PyObject) -> c_int {
+pub unsafe fn PyMapping_DelItem(o: *mut PyObject, key: *mut PyObject) -> c_int { unsafe {
     PyObject_DelItem(o, key)
-}
+}}
 
 #[inline]
-pub unsafe fn PyMapping_Keys(o: *mut PyObject) -> *mut PyObject {
+pub unsafe fn PyMapping_Keys(o: *mut PyObject) -> *mut PyObject { unsafe {
     PyObject_CallMethod(o, "keys\0".as_ptr() as *mut c_char, ptr::null_mut())
-}
+}}
 
 #[inline]
-pub unsafe fn PyMapping_Values(o: *mut PyObject) -> *mut PyObject {
+pub unsafe fn PyMapping_Values(o: *mut PyObject) -> *mut PyObject { unsafe {
     PyObject_CallMethod(o, "values\0".as_ptr() as *mut c_char, ptr::null_mut())
-}
+}}
 
 #[inline]
-pub unsafe fn PyMapping_Items(o: *mut PyObject) -> *mut PyObject {
+pub unsafe fn PyMapping_Items(o: *mut PyObject) -> *mut PyObject { unsafe {
     PyObject_CallMethod(o, "items\0".as_ptr() as *mut c_char, ptr::null_mut())
-}
+}}

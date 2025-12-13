@@ -20,9 +20,9 @@ unsafe extern "C" {
 }
 
 #[inline]
-pub unsafe fn PyCell_Check(op: *mut PyObject) -> c_int {
-    (Py_TYPE(op) == &mut PyCell_Type) as c_int
-}
+pub unsafe fn PyCell_Check(op: *mut PyObject) -> c_int { unsafe {
+    (Py_TYPE(op) == &raw mut PyCell_Type) as c_int
+}}
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
 unsafe extern "C" {
@@ -32,11 +32,11 @@ unsafe extern "C" {
 }
 
 #[inline]
-pub unsafe fn PyCell_GET(op: *mut PyObject) -> *mut PyObject {
+pub unsafe fn PyCell_GET(op: *mut PyObject) -> *mut PyObject { unsafe {
     (*(op as *mut PyCellObject)).ob_ref
-}
+}}
 
 #[inline]
-pub unsafe fn PyCell_SET(op: *mut PyObject, obj: *mut PyObject) {
+pub unsafe fn PyCell_SET(op: *mut PyObject, obj: *mut PyObject) { unsafe {
     (*(op as *mut PyCellObject)).ob_ref = obj;
-}
+}}

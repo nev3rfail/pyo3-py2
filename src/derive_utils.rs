@@ -167,7 +167,7 @@ pub unsafe fn make_module(
     name: &str,
     doc: &str,
     initializer: impl Fn(Python, &PyModule) -> PyResult<()>,
-) {
+) { unsafe {
     init_once();
 
     #[cfg(py_sys_config = "WITH_THREAD")]
@@ -195,4 +195,4 @@ pub unsafe fn make_module(
     if let Err(e) = initializer(py, _module) {
         e.restore(py)
     }
-}
+}}

@@ -8,20 +8,20 @@ unsafe extern "C" {
 }
 
 #[inline]
-pub unsafe fn PyMemoryView_Check(op: *mut PyObject) -> c_int {
-    let u: *mut PyTypeObject = &mut PyMemoryView_Type;
+pub unsafe fn PyMemoryView_Check(op: *mut PyObject) -> c_int { unsafe {
+    let u: *mut PyTypeObject = &raw mut PyMemoryView_Type;
     (Py_TYPE(op) == u) as c_int
-}
+}}
 
 #[inline]
-pub unsafe fn PyMemoryView_GET_BUFFER(op: *mut PyObject) -> *mut Py_buffer {
+pub unsafe fn PyMemoryView_GET_BUFFER(op: *mut PyObject) -> *mut Py_buffer { unsafe {
     &mut (*(op as *mut PyMemoryViewObject)).view
-}
+}}
 
 #[inline]
-pub unsafe fn PyMemoryView_GET_BASE(op: *mut PyObject) -> *mut PyObject {
+pub unsafe fn PyMemoryView_GET_BASE(op: *mut PyObject) -> *mut PyObject { unsafe {
     (*(op as *mut PyMemoryViewObject)).view.obj
-}
+}}
 
 #[cfg_attr(windows, link(name = "pythonXY"))]
 unsafe extern "C" {

@@ -74,7 +74,7 @@ impl PyModule {
         }
     }
 
-    unsafe fn str_from_ptr(&self, ptr: *const c_char) -> PyResult<&str> {
+    unsafe fn str_from_ptr(&self, ptr: *const c_char) -> PyResult<&str> { unsafe {
         if ptr.is_null() {
             Err(PyErr::fetch(self.py()))
         } else {
@@ -86,7 +86,7 @@ impl PyModule {
                 )),
             }
         }
-    }
+    }}
 
     /// Gets the module name.
     ///
