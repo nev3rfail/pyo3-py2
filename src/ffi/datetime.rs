@@ -287,24 +287,24 @@ macro_rules! _access_field {
 /// Returns a signed integer greater than 0.
 pub unsafe fn PyDateTime_GET_YEAR(o: *mut PyObject) -> c_int { unsafe {
     // This should work for Date or DateTime
-    let d = *(o as *mut PyDateTime_Date);
-    c_int::from(d.data[0]) << 8 | c_int::from(d.data[1])
+    let d = o as *mut PyDateTime_Date;
+    c_int::from((*d).data[0]) << 8 | c_int::from((*d).data[1])
 }}
 
 #[inline]
 /// Retrieve the month component of a `PyDateTime_Date` or `PyDateTime_DateTime`.
 /// Returns a signed integer in the range `[1, 12]`.
 pub unsafe fn PyDateTime_GET_MONTH(o: *mut PyObject) -> c_int { unsafe {
-    let d = *(o as *mut PyDateTime_Date);
-    c_int::from(d.data[2])
+    let d = o as *mut PyDateTime_Date;
+    c_int::from((*d).data[2])
 }}
 
 #[inline]
 /// Retrieve the day component of a `PyDateTime_Date` or `PyDateTime_DateTime`.
 /// Returns a signed integer in the interval `[1, 31]`.
 pub unsafe fn PyDateTime_GET_DAY(o: *mut PyObject) -> c_int { unsafe {
-    let d = *(o as *mut PyDateTime_Date);
-    c_int::from(d.data[3])
+    let d = o as *mut PyDateTime_Date;
+    c_int::from((*d).data[3])
 }}
 
 // Accessor macros for times
