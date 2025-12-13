@@ -27,7 +27,7 @@ class PyTest(TestCommand):
         subprocess.check_call(["pytest", "tests"])
 
 
-setup_requires = ["setuptools-rust>=0.10.1", "wheel"]
+setup_requires = ["setuptools-rust==0.10.2", "wheel"]
 install_requires = []
 tests_require = install_requires + ["pytest", "pytest-benchmark"]
 

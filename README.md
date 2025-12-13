@@ -154,6 +154,20 @@ fn main() -> PyResult<()> {
  * [point-process](https://github.com/ManifoldFR/point-process-rust/tree/master/pylib) _High level API for pointprocesses as a Python library_
   * [autopy](https://github.com/autopilot-rs/autopy) _A simple, cross-platform GUI automation library for Python and Rust._
 
+## Tests
+```bash
+c:\python27\python -m pip install virtualenv;
+```
+```bash
+c:\python27\python -m virtualenv venv;
+```
+```bash
+venv/scripts/python -m pip install tox;
+```
+```bash
+venv/scripts/tox
+```
+
 ## License
 
 PyO3 is licensed under the [Apache-2.0 license](http://opensource.org/licenses/APACHE-2.0).
