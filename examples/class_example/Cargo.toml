@@ -1,0 +1,11 @@
+[package]
+name = "class-example"
+version = "0.1.0"
+
+[lib]
+name = "class_example"
+crate-type = ["cdylib"]
+
+[dependencies.pyo3]
+path = "../../"
+features = ["extension-module", "python2"]
