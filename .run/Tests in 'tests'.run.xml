@@ -1,0 +1,21 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Tests in 'tests'" type="CargoCommandRunConfiguration" factoryName="Cargo Command">
+    <option name="command" value="test --package pyo3 --test test_arithmetics --test test_buffer_protocol --test test_class_basics --test test_class_new --test test_datetime --test test_dict_iter --test test_doc --test test_dunder --test test_gc --test test_getter_setter --test test_inheritance --test test_methods --test test_module --test test_various --features python2" />
+    <option name="workingDirectory" value="file://$PROJECT_DIR$" />
+    <envs>
+      <env name="PYTHON_SYS_EXECUTABLE" value="f:\fun\py2playground\venv-py2\Scripts\python.exe" />
+    </envs>
+    <option name="emulateTerminal" value="true" />
+    <option name="channel" value="DEFAULT" />
+    <option name="requiredFeatures" value="true" />
+    <option name="allFeatures" value="false" />
+    <option name="withSudo" value="false" />
+    <option name="buildTarget" value="REMOTE" />
+    <option name="backtrace" value="SHORT" />
+    <option name="isRedirectInput" value="false" />
+    <option name="redirectInputPath" value="" />
+    <method v="2">
+      <option name="CARGO.BUILD_TASK_PROVIDER" enabled="true" />
+    </method>
+  </configuration>
+</component>
