@@ -12,7 +12,7 @@ use crate::ffi::{PyObject, PyTypeObject};
 use crate::ffi::{PyObject_TypeCheck, Py_TYPE};
 use std::ffi::CString;
 use std::ops::Deref;
-use std::os::raw::{c_char, c_int, c_uchar};
+use std::os::raw::{c_char, c_int, c_long, c_uchar};
 use std::ptr;
 use std::sync::Once;
 
@@ -95,6 +95,7 @@ const _PyDateTime_DATE_DATASIZE: usize = 4;
 const _PyDateTime_TIME_DATASIZE: usize = 6;
 const _PyDateTime_DATETIME_DATASIZE: usize = 10;
 
+#[cfg(Py_3)]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 /// Structure representing a `datetime.date`
@@ -105,6 +106,18 @@ pub struct PyDateTime_Date {
     pub data: [c_uchar; _PyDateTime_DATE_DATASIZE],
 }
 
+#[cfg(not(Py_3))]
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+/// Structure representing a `datetime.date`
+pub struct PyDateTime_Date {
+    pub ob_base: PyObject,
+    pub hashcode: c_long,
+    pub hastzinfo: c_char,
+    pub data: [c_uchar; _PyDateTime_DATE_DATASIZE],
+}
+
+#[cfg(Py_3)]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 /// Structure representing a `datetime.time`
@@ -118,6 +131,19 @@ pub struct PyDateTime_Time {
     pub tzinfo: *mut PyObject,
 }
 
+#[cfg(not(Py_3))]
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+/// Structure representing a `datetime.time`
+pub struct PyDateTime_Time {
+    pub ob_base: PyObject,
+    pub hashcode: c_long,
+    pub hastzinfo: c_char,
+    pub data: [c_uchar; _PyDateTime_TIME_DATASIZE],
+    pub tzinfo: *mut PyObject,
+}
+
+#[cfg(Py_3)]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 /// Structure representing a `datetime.datetime`
@@ -131,12 +157,37 @@ pub struct PyDateTime_DateTime {
     pub tzinfo: *mut PyObject,
 }
 
+#[cfg(not(Py_3))]
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+/// Structure representing a `datetime.datetime`
+pub struct PyDateTime_DateTime {
+    pub ob_base: PyObject,
+    pub hashcode: c_long,
+    pub hastzinfo: c_char,
+    pub data: [c_uchar; _PyDateTime_DATETIME_DATASIZE],
+    pub tzinfo: *mut PyObject,
+}
+
+#[cfg(Py_3)]
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 /// Structure representing a `datetime.timedelta`
 pub struct PyDateTime_Delta {
     pub ob_base: PyObject,
     pub hashcode: Py_hash_t,
+    pub days: c_int,
+    pub seconds: c_int,
+    pub microseconds: c_int,
+}
+
+#[cfg(not(Py_3))]
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+/// Structure representing a `datetime.timedelta`
+pub struct PyDateTime_Delta {
+    pub ob_base: PyObject,
+    pub hashcode: c_long,
     pub days: c_int,
     pub seconds: c_int,
     pub microseconds: c_int,
